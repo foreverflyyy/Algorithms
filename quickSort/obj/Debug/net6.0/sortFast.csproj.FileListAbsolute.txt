@@ -1,0 +1,15 @@
+D:\dream\C#\binarySearch\sortFast\bin\Debug\net6.0\sortFast.exe
+D:\dream\C#\binarySearch\sortFast\bin\Debug\net6.0\sortFast.deps.json
+D:\dream\C#\binarySearch\sortFast\bin\Debug\net6.0\sortFast.runtimeconfig.json
+D:\dream\C#\binarySearch\sortFast\bin\Debug\net6.0\sortFast.dll
+D:\dream\C#\binarySearch\sortFast\bin\Debug\net6.0\sortFast.pdb
+D:\dream\C#\binarySearch\sortFast\obj\Debug\net6.0\sortFast.csproj.AssemblyReference.cache
+D:\dream\C#\binarySearch\sortFast\obj\Debug\net6.0\sortFast.GeneratedMSBuildEditorConfig.editorconfig
+D:\dream\C#\binarySearch\sortFast\obj\Debug\net6.0\sortFast.AssemblyInfoInputs.cache
+D:\dream\C#\binarySearch\sortFast\obj\Debug\net6.0\sortFast.AssemblyInfo.cs
+D:\dream\C#\binarySearch\sortFast\obj\Debug\net6.0\sortFast.csproj.CoreCompileInputs.cache
+D:\dream\C#\binarySearch\sortFast\obj\Debug\net6.0\sortFast.dll
+D:\dream\C#\binarySearch\sortFast\obj\Debug\net6.0\refint\sortFast.dll
+D:\dream\C#\binarySearch\sortFast\obj\Debug\net6.0\sortFast.pdb
+D:\dream\C#\binarySearch\sortFast\obj\Debug\net6.0\sortFast.genruntimeconfig.cache
+D:\dream\C#\binarySearch\sortFast\obj\Debug\net6.0\ref\sortFast.dll

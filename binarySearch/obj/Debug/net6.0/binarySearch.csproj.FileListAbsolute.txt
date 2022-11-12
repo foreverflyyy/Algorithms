@@ -1,0 +1,15 @@
+D:\dream\C#\binarySearch\binarySearch\obj\Debug\net6.0\binarySearch.csproj.AssemblyReference.cache
+D:\dream\C#\binarySearch\binarySearch\obj\Debug\net6.0\binarySearch.GeneratedMSBuildEditorConfig.editorconfig
+D:\dream\C#\binarySearch\binarySearch\obj\Debug\net6.0\binarySearch.AssemblyInfoInputs.cache
+D:\dream\C#\binarySearch\binarySearch\obj\Debug\net6.0\binarySearch.AssemblyInfo.cs
+D:\dream\C#\binarySearch\binarySearch\obj\Debug\net6.0\binarySearch.csproj.CoreCompileInputs.cache
+D:\dream\C#\binarySearch\binarySearch\bin\Debug\net6.0\binarySearch.exe
+D:\dream\C#\binarySearch\binarySearch\bin\Debug\net6.0\binarySearch.deps.json
+D:\dream\C#\binarySearch\binarySearch\bin\Debug\net6.0\binarySearch.runtimeconfig.json
+D:\dream\C#\binarySearch\binarySearch\bin\Debug\net6.0\binarySearch.dll
+D:\dream\C#\binarySearch\binarySearch\bin\Debug\net6.0\binarySearch.pdb
+D:\dream\C#\binarySearch\binarySearch\obj\Debug\net6.0\binarySearch.dll
+D:\dream\C#\binarySearch\binarySearch\obj\Debug\net6.0\refint\binarySearch.dll
+D:\dream\C#\binarySearch\binarySearch\obj\Debug\net6.0\binarySearch.pdb
+D:\dream\C#\binarySearch\binarySearch\obj\Debug\net6.0\binarySearch.genruntimeconfig.cache
+D:\dream\C#\binarySearch\binarySearch\obj\Debug\net6.0\ref\binarySearch.dll

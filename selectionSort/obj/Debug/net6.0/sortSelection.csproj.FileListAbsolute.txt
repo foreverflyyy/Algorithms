@@ -1,0 +1,15 @@
+D:\dream\C#\binarySearch\sortSelection\bin\Debug\net6.0\sortSelection.exe
+D:\dream\C#\binarySearch\sortSelection\bin\Debug\net6.0\sortSelection.deps.json
+D:\dream\C#\binarySearch\sortSelection\bin\Debug\net6.0\sortSelection.runtimeconfig.json
+D:\dream\C#\binarySearch\sortSelection\bin\Debug\net6.0\sortSelection.dll
+D:\dream\C#\binarySearch\sortSelection\bin\Debug\net6.0\sortSelection.pdb
+D:\dream\C#\binarySearch\sortSelection\obj\Debug\net6.0\sortSelection.csproj.AssemblyReference.cache
+D:\dream\C#\binarySearch\sortSelection\obj\Debug\net6.0\sortSelection.GeneratedMSBuildEditorConfig.editorconfig
+D:\dream\C#\binarySearch\sortSelection\obj\Debug\net6.0\sortSelection.AssemblyInfoInputs.cache
+D:\dream\C#\binarySearch\sortSelection\obj\Debug\net6.0\sortSelection.AssemblyInfo.cs
+D:\dream\C#\binarySearch\sortSelection\obj\Debug\net6.0\sortSelection.csproj.CoreCompileInputs.cache
+D:\dream\C#\binarySearch\sortSelection\obj\Debug\net6.0\sortSelection.dll
+D:\dream\C#\binarySearch\sortSelection\obj\Debug\net6.0\refint\sortSelection.dll
+D:\dream\C#\binarySearch\sortSelection\obj\Debug\net6.0\sortSelection.pdb
+D:\dream\C#\binarySearch\sortSelection\obj\Debug\net6.0\sortSelection.genruntimeconfig.cache
+D:\dream\C#\binarySearch\sortSelection\obj\Debug\net6.0\ref\sortSelection.dll

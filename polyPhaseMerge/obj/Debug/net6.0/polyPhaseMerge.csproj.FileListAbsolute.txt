@@ -1,0 +1,15 @@
+D:\dream\C#\binarySearch\polyPhaseMerge\bin\Debug\net6.0\polyPhaseMerge.exe
+D:\dream\C#\binarySearch\polyPhaseMerge\bin\Debug\net6.0\polyPhaseMerge.deps.json
+D:\dream\C#\binarySearch\polyPhaseMerge\bin\Debug\net6.0\polyPhaseMerge.runtimeconfig.json
+D:\dream\C#\binarySearch\polyPhaseMerge\bin\Debug\net6.0\polyPhaseMerge.dll
+D:\dream\C#\binarySearch\polyPhaseMerge\bin\Debug\net6.0\polyPhaseMerge.pdb
+D:\dream\C#\binarySearch\polyPhaseMerge\obj\Debug\net6.0\polyPhaseMerge.csproj.AssemblyReference.cache
+D:\dream\C#\binarySearch\polyPhaseMerge\obj\Debug\net6.0\polyPhaseMerge.GeneratedMSBuildEditorConfig.editorconfig
+D:\dream\C#\binarySearch\polyPhaseMerge\obj\Debug\net6.0\polyPhaseMerge.AssemblyInfoInputs.cache
+D:\dream\C#\binarySearch\polyPhaseMerge\obj\Debug\net6.0\polyPhaseMerge.AssemblyInfo.cs
+D:\dream\C#\binarySearch\polyPhaseMerge\obj\Debug\net6.0\polyPhaseMerge.csproj.CoreCompileInputs.cache
+D:\dream\C#\binarySearch\polyPhaseMerge\obj\Debug\net6.0\polyPhaseMerge.dll
+D:\dream\C#\binarySearch\polyPhaseMerge\obj\Debug\net6.0\refint\polyPhaseMerge.dll
+D:\dream\C#\binarySearch\polyPhaseMerge\obj\Debug\net6.0\polyPhaseMerge.pdb
+D:\dream\C#\binarySearch\polyPhaseMerge\obj\Debug\net6.0\polyPhaseMerge.genruntimeconfig.cache
+D:\dream\C#\binarySearch\polyPhaseMerge\obj\Debug\net6.0\ref\polyPhaseMerge.dll

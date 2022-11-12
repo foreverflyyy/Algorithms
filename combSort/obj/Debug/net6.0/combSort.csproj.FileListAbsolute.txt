@@ -1,0 +1,15 @@
+D:\dream\C#\binarySearch\combSort\bin\Debug\net6.0\combSort.exe
+D:\dream\C#\binarySearch\combSort\bin\Debug\net6.0\combSort.deps.json
+D:\dream\C#\binarySearch\combSort\bin\Debug\net6.0\combSort.runtimeconfig.json
+D:\dream\C#\binarySearch\combSort\bin\Debug\net6.0\combSort.dll
+D:\dream\C#\binarySearch\combSort\bin\Debug\net6.0\combSort.pdb
+D:\dream\C#\binarySearch\combSort\obj\Debug\net6.0\combSort.csproj.AssemblyReference.cache
+D:\dream\C#\binarySearch\combSort\obj\Debug\net6.0\combSort.GeneratedMSBuildEditorConfig.editorconfig
+D:\dream\C#\binarySearch\combSort\obj\Debug\net6.0\combSort.AssemblyInfoInputs.cache
+D:\dream\C#\binarySearch\combSort\obj\Debug\net6.0\combSort.AssemblyInfo.cs
+D:\dream\C#\binarySearch\combSort\obj\Debug\net6.0\combSort.csproj.CoreCompileInputs.cache
+D:\dream\C#\binarySearch\combSort\obj\Debug\net6.0\combSort.dll
+D:\dream\C#\binarySearch\combSort\obj\Debug\net6.0\refint\combSort.dll
+D:\dream\C#\binarySearch\combSort\obj\Debug\net6.0\combSort.pdb
+D:\dream\C#\binarySearch\combSort\obj\Debug\net6.0\combSort.genruntimeconfig.cache
+D:\dream\C#\binarySearch\combSort\obj\Debug\net6.0\ref\combSort.dll

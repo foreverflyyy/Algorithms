@@ -1,0 +1,15 @@
+D:\dream\C#\binarySearch\insertionSort\bin\Debug\net6.0\insertionSort.exe
+D:\dream\C#\binarySearch\insertionSort\bin\Debug\net6.0\insertionSort.deps.json
+D:\dream\C#\binarySearch\insertionSort\bin\Debug\net6.0\insertionSort.runtimeconfig.json
+D:\dream\C#\binarySearch\insertionSort\bin\Debug\net6.0\insertionSort.dll
+D:\dream\C#\binarySearch\insertionSort\bin\Debug\net6.0\insertionSort.pdb
+D:\dream\C#\binarySearch\insertionSort\obj\Debug\net6.0\insertionSort.csproj.AssemblyReference.cache
+D:\dream\C#\binarySearch\insertionSort\obj\Debug\net6.0\insertionSort.GeneratedMSBuildEditorConfig.editorconfig
+D:\dream\C#\binarySearch\insertionSort\obj\Debug\net6.0\insertionSort.AssemblyInfoInputs.cache
+D:\dream\C#\binarySearch\insertionSort\obj\Debug\net6.0\insertionSort.AssemblyInfo.cs
+D:\dream\C#\binarySearch\insertionSort\obj\Debug\net6.0\insertionSort.csproj.CoreCompileInputs.cache
+D:\dream\C#\binarySearch\insertionSort\obj\Debug\net6.0\insertionSort.dll
+D:\dream\C#\binarySearch\insertionSort\obj\Debug\net6.0\refint\insertionSort.dll
+D:\dream\C#\binarySearch\insertionSort\obj\Debug\net6.0\insertionSort.pdb
+D:\dream\C#\binarySearch\insertionSort\obj\Debug\net6.0\insertionSort.genruntimeconfig.cache
+D:\dream\C#\binarySearch\insertionSort\obj\Debug\net6.0\ref\insertionSort.dll

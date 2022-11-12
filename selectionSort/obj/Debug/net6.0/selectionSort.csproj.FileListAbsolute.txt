@@ -1,0 +1,15 @@
+D:\dream\C#\binarySearch\selectionSort\bin\Debug\net6.0\selectionSort.exe
+D:\dream\C#\binarySearch\selectionSort\bin\Debug\net6.0\selectionSort.deps.json
+D:\dream\C#\binarySearch\selectionSort\bin\Debug\net6.0\selectionSort.runtimeconfig.json
+D:\dream\C#\binarySearch\selectionSort\bin\Debug\net6.0\selectionSort.dll
+D:\dream\C#\binarySearch\selectionSort\bin\Debug\net6.0\selectionSort.pdb
+D:\dream\C#\binarySearch\selectionSort\obj\Debug\net6.0\selectionSort.csproj.AssemblyReference.cache
+D:\dream\C#\binarySearch\selectionSort\obj\Debug\net6.0\selectionSort.GeneratedMSBuildEditorConfig.editorconfig
+D:\dream\C#\binarySearch\selectionSort\obj\Debug\net6.0\selectionSort.AssemblyInfoInputs.cache
+D:\dream\C#\binarySearch\selectionSort\obj\Debug\net6.0\selectionSort.AssemblyInfo.cs
+D:\dream\C#\binarySearch\selectionSort\obj\Debug\net6.0\selectionSort.csproj.CoreCompileInputs.cache
+D:\dream\C#\binarySearch\selectionSort\obj\Debug\net6.0\selectionSort.dll
+D:\dream\C#\binarySearch\selectionSort\obj\Debug\net6.0\refint\selectionSort.dll
+D:\dream\C#\binarySearch\selectionSort\obj\Debug\net6.0\selectionSort.pdb
+D:\dream\C#\binarySearch\selectionSort\obj\Debug\net6.0\selectionSort.genruntimeconfig.cache
+D:\dream\C#\binarySearch\selectionSort\obj\Debug\net6.0\ref\selectionSort.dll

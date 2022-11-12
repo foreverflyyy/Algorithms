@@ -1,0 +1,15 @@
+D:\dream\C#\binarySearch\mergeSort\bin\Debug\net6.0\mergeSort.exe
+D:\dream\C#\binarySearch\mergeSort\bin\Debug\net6.0\mergeSort.deps.json
+D:\dream\C#\binarySearch\mergeSort\bin\Debug\net6.0\mergeSort.runtimeconfig.json
+D:\dream\C#\binarySearch\mergeSort\bin\Debug\net6.0\mergeSort.dll
+D:\dream\C#\binarySearch\mergeSort\bin\Debug\net6.0\mergeSort.pdb
+D:\dream\C#\binarySearch\mergeSort\obj\Debug\net6.0\mergeSort.csproj.AssemblyReference.cache
+D:\dream\C#\binarySearch\mergeSort\obj\Debug\net6.0\mergeSort.GeneratedMSBuildEditorConfig.editorconfig
+D:\dream\C#\binarySearch\mergeSort\obj\Debug\net6.0\mergeSort.AssemblyInfoInputs.cache
+D:\dream\C#\binarySearch\mergeSort\obj\Debug\net6.0\mergeSort.AssemblyInfo.cs
+D:\dream\C#\binarySearch\mergeSort\obj\Debug\net6.0\mergeSort.csproj.CoreCompileInputs.cache
+D:\dream\C#\binarySearch\mergeSort\obj\Debug\net6.0\mergeSort.dll
+D:\dream\C#\binarySearch\mergeSort\obj\Debug\net6.0\refint\mergeSort.dll
+D:\dream\C#\binarySearch\mergeSort\obj\Debug\net6.0\mergeSort.pdb
+D:\dream\C#\binarySearch\mergeSort\obj\Debug\net6.0\mergeSort.genruntimeconfig.cache
+D:\dream\C#\binarySearch\mergeSort\obj\Debug\net6.0\ref\mergeSort.dll

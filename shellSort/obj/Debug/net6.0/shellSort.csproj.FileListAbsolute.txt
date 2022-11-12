@@ -1,0 +1,15 @@
+D:\dream\C#\binarySearch\shellSort\bin\Debug\net6.0\shellSort.exe
+D:\dream\C#\binarySearch\shellSort\bin\Debug\net6.0\shellSort.deps.json
+D:\dream\C#\binarySearch\shellSort\bin\Debug\net6.0\shellSort.runtimeconfig.json
+D:\dream\C#\binarySearch\shellSort\bin\Debug\net6.0\shellSort.dll
+D:\dream\C#\binarySearch\shellSort\bin\Debug\net6.0\shellSort.pdb
+D:\dream\C#\binarySearch\shellSort\obj\Debug\net6.0\shellSort.csproj.AssemblyReference.cache
+D:\dream\C#\binarySearch\shellSort\obj\Debug\net6.0\shellSort.GeneratedMSBuildEditorConfig.editorconfig
+D:\dream\C#\binarySearch\shellSort\obj\Debug\net6.0\shellSort.AssemblyInfoInputs.cache
+D:\dream\C#\binarySearch\shellSort\obj\Debug\net6.0\shellSort.AssemblyInfo.cs
+D:\dream\C#\binarySearch\shellSort\obj\Debug\net6.0\shellSort.csproj.CoreCompileInputs.cache
+D:\dream\C#\binarySearch\shellSort\obj\Debug\net6.0\shellSort.dll
+D:\dream\C#\binarySearch\shellSort\obj\Debug\net6.0\refint\shellSort.dll
+D:\dream\C#\binarySearch\shellSort\obj\Debug\net6.0\shellSort.pdb
+D:\dream\C#\binarySearch\shellSort\obj\Debug\net6.0\shellSort.genruntimeconfig.cache
+D:\dream\C#\binarySearch\shellSort\obj\Debug\net6.0\ref\shellSort.dll

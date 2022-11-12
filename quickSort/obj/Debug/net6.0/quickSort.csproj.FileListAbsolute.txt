@@ -1,0 +1,15 @@
+D:\dream\C#\binarySearch\quickSort\bin\Debug\net6.0\quickSort.exe
+D:\dream\C#\binarySearch\quickSort\bin\Debug\net6.0\quickSort.deps.json
+D:\dream\C#\binarySearch\quickSort\bin\Debug\net6.0\quickSort.runtimeconfig.json
+D:\dream\C#\binarySearch\quickSort\bin\Debug\net6.0\quickSort.dll
+D:\dream\C#\binarySearch\quickSort\bin\Debug\net6.0\quickSort.pdb
+D:\dream\C#\binarySearch\quickSort\obj\Debug\net6.0\quickSort.csproj.AssemblyReference.cache
+D:\dream\C#\binarySearch\quickSort\obj\Debug\net6.0\quickSort.GeneratedMSBuildEditorConfig.editorconfig
+D:\dream\C#\binarySearch\quickSort\obj\Debug\net6.0\quickSort.AssemblyInfoInputs.cache
+D:\dream\C#\binarySearch\quickSort\obj\Debug\net6.0\quickSort.AssemblyInfo.cs
+D:\dream\C#\binarySearch\quickSort\obj\Debug\net6.0\quickSort.csproj.CoreCompileInputs.cache
+D:\dream\C#\binarySearch\quickSort\obj\Debug\net6.0\quickSort.dll
+D:\dream\C#\binarySearch\quickSort\obj\Debug\net6.0\refint\quickSort.dll
+D:\dream\C#\binarySearch\quickSort\obj\Debug\net6.0\quickSort.pdb
+D:\dream\C#\binarySearch\quickSort\obj\Debug\net6.0\quickSort.genruntimeconfig.cache
+D:\dream\C#\binarySearch\quickSort\obj\Debug\net6.0\ref\quickSort.dll
