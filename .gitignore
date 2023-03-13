@@ -56,6 +56,23 @@ HashTable/OpenAddressingHash/OpenAddressingHash.csproj
 HashTable/OpenAddressingHash/bin
 HashTable/OpenAddressingHash/obj
 
+#Trees
+
+Trees/.idea
+Trees/trees.sln
+
+Trees/StackBT/StackBT.csproj
+Trees/StackBT/bin
+Trees/StackBT/obj
+
+Trees/RecursionBT/RecursionBT.csproj
+Trees/RecursionBT/bin
+Trees/RecursionBT/obj
+
+Trees/OperationsForBT/OperationsForBT.csproj
+Trees/OperationsForBT/bin
+Trees/OperationsForBT/obj
+
 # Graphs:
 
 /Graphs/.vs
