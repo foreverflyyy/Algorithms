@@ -43,7 +43,18 @@ Sorting/shellSort/shellSort.csproj
 Sorting/shellSort/bin
 Sorting/shellSort/obj
 
+#HashTable
 
+HashTable/.idea
+HashTable/HashTable.sln
+
+HashTable/ChainedHash/ChainedHash.csproj
+HashTable/ChainedHash/bin
+HashTable/ChainedHash/obj
+
+HashTable/OpenAddressingHash/OpenAddressingHash.csproj
+HashTable/OpenAddressingHash/bin
+HashTable/OpenAddressingHash/obj
 
 # Graphs:
 
