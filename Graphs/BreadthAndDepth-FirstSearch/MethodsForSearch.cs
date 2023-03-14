@@ -1,20 +1,21 @@
-﻿
-
+﻿using BreadthAndDepth_FirstSearch;
 
 namespace Graphs
 {
-
     /// <summary>
     /// Класс с методами поиска в графе
     /// </summary>
     /// <typeparam name="T"> Тип данных, который будет у значения узла </typeparam>
     public class MethodsForSearch<T>
     {
-        public Dictionary<T, List<T>> nodes;
+        public Dictionary<T, List<T>> nodes = new Dictionary<T, List<T>>();
+        public List<Node<T>> nodesList = new List<Node<T>>();
 
         public MethodsForSearch(Dictionary<T, List<T>> nodes)
         {
             this.nodes = nodes;
+            foreach (var node in nodes)
+                nodesList.Add(new Node<T>() { Name = node.Key, ConnectedNodes = node.Value, Visited = false });
         }
 
         /// <summary>
@@ -29,46 +30,45 @@ namespace Graphs
                 return 0;
 
             var queue = new Queue<T>();
-
-            // Заполняем первый уровень поиска
-            var connectedNodes = nodes[start];
-            foreach(var node in connectedNodes)
-                queue.Enqueue(node);
-            
             List<T> checkedNode = new List<T>();
             var recervedQueue = new Queue<T>();
 
+            // Заполняем первый уровень поиска
+            var connectedNodes = nodes[start];
+            foreach (var node in connectedNodes)
+                queue.Enqueue(node);
+
             int ways = 1;   // Счётчик пути
 
-            while (queue.Count != 0)
+            while (queue.Count != 0 || recervedQueue.Count != 0)
             {
+                // Если текущий уровень проверки закончился, переходим к следующему
+                if (queue.Count == 0)
+                {
+                    while (recervedQueue.Count != 0)
+                        queue.Enqueue(recervedQueue.Dequeue());
+                    ways++;
+                    recervedQueue.Clear();
+                }
+
                 var first = queue.Dequeue();
 
                 // Проверка, а не смотрели ли мы уже этот узел
                 if (checkedNode.Contains(first))
                     continue;
 
+                // Добавление в список проверенных узлов
+                checkedNode.Add(first);
+
                 // Проверка соответствию нашей цели
                 if (first?.ToString() == end?.ToString())
                     return ways;
 
                 // Добавление следующего уровня поиска
-                connectedNodes = nodes[first];
+                connectedNodes = nodes[first].Where(x => !checkedNode.Contains(x)).ToList();
 
                 foreach (var node in connectedNodes)
                     recervedQueue.Enqueue(node);
-
-                // Добавление в список проверенных узлов
-                checkedNode.Add(first);
-
-                // Если текущий уровень проверки закончился, переходим к следующему
-                if(queue.Count == 0)
-                {
-                    for(int i = 0; i < recervedQueue.Count(); i++)
-                        queue.Enqueue(recervedQueue.Dequeue());
-                    ways++;
-                    recervedQueue.Clear();
-                }
             }
 
             return 0;
@@ -85,98 +85,170 @@ namespace Graphs
             if (start.ToString() == end.ToString())
                 return 0;
 
-            int currentWays = 1;    // Счётчик сколько прошли
-            int shortWay = 1;       // Кратчайшее расстояние
-
+            int currentWays = 1;    // Счётчик сколько прошли пути
             var stack = new Stack<T>();
 
-            // Заполняем первый уровень поиска
+            // Список пройденных узлов
+            List<T> checkedNode = new List<T>();
+            checkedNode.Add(start);
+
+            // Заполняем первый уровень поиска (у начального узла вводим смежные ему узлы)
             var connectedNodes = nodes[start];
             foreach (var node in connectedNodes)
                 stack.Push(node);
-
-            List<T> checkedNode = new List<T>();
 
             while (stack.Count != 0)
             {
                 var first = stack.Pop();
 
-                // Проверка соответствию нашей цели
-                if (first?.ToString() == end?.ToString())
+                // Проверка, смотрели ли мы уже этот узел
+                if (checkedNode.Contains(first))
                 {
-                    if (shortWay == 0)
-                    {
-                        shortWay = currentWays;
-                    }
-                    else if (shortWay > currentWays)
-                    {
-                        shortWay = currentWays;
-                        currentWays--;
-                    }
+                    currentWays--;
                     continue;
                 }
 
-                // Проверка, смотрели ли мы уже этот узел
-                if (checkedNode.Contains(first))
-                    continue;
+                // Проверка соответствию нашей цели
+                if (first?.ToString() == end?.ToString())
+                    return currentWays;
 
                 // Добавление в список проверенных узлов
                 checkedNode.Add(first);
 
                 // Добавление следующего уровня поиска
-                connectedNodes = nodes[first];
+                connectedNodes = nodes[first].Where(x => !checkedNode.Contains(x)).ToList();
+
+                if (connectedNodes.Count == 0)
+                {
+                    currentWays--;
+                    continue;
+                }
 
                 foreach (var node in connectedNodes)
                     stack.Push(node);
+
+                currentWays++;
             }
 
-            return shortWay;
+            return 0;
         }
-
+        
         /// <summary>
         /// Поиск в глубину (поиск кратчайшего расстояния до узла)
         /// </summary>
         /// <param name="start"> Стартовый узел </param>
         /// <param name="end"> Конечный узел </param>
-        /// <param name="currentWays"> Сколько ребер графа прошли</param>
-        /// <param name="shortWay"> Кратчашее найденное расстояние </param>
-        /// <param name="checkedNode"> Проверенные узлы </param>
-        public void RecurtionDFS(T start, T end, ref int currentWays, ref int shortWay, List<T> checkedNode)
+        /// <returns></returns>
+        /*public int DFSWithLevels(T start, T end)
         {
-            // Проверка на соотвествие концу пути
-            if (start?.ToString() == end?.ToString()) 
-            {
-                if (shortWay == 0)
-                {
-                    shortWay = currentWays;
-                    return;
-                }
-                else if(shortWay > currentWays)
-                {
-                    shortWay = currentWays;
-                    currentWays--;
-                    return;
-                }
-            }
+            if (start.ToString() == end.ToString())
+                return 0;
 
-            // Проверяем, был ли уже этот узел
-            if (checkedNode.Contains(start))
-                return;
+            int currentWays = 1;    // Счётчик сколько прошли пути
+            var stack = new Stack<T>();
 
-            // Добавление в список проверенных узлов
-            checkedNode.Add(start);
+            // Список пройденных узлов
+            var firstNode = nodesList.FirstOrDefault(x => x.Name?.ToString() == start?.ToString());
+            firstNode.Visited = true;
 
-            // Заполняем уровень поиска
-            var connectedNodes = nodes[start];
-
+            // Заполняем первый уровень поиска (у начального узла вводим смежные ему узлы)
+            var connectedNodes = nodesList[start];
             foreach (var node in connectedNodes)
+                stack.Push(node);
+
+            while (stack.Count != 0)
             {
+                var first = stack.Pop();
+
+                // Проверка, смотрели ли мы уже этот узел
+                if (checkedNode.Contains(first))
+                {
+                    currentWays--;
+                    continue;
+                }
+
+                // Проверка соответствию нашей цели
+                if (first?.ToString() == end?.ToString())
+                    return currentWays;
+
+                // Добавление в список проверенных узлов
+                checkedNode.Add(first);
+
+                // Добавление следующего уровня поиска
+                connectedNodes = nodes[first].Where(x => !checkedNode.Contains(x)).ToList();
+
+                if (connectedNodes.Count == 0)
+                {
+                    currentWays--;
+                    continue;
+                }
+
+                foreach (var node in connectedNodes)
+                    stack.Push(node);
+
                 currentWays++;
-                RecurtionDFS(node, end, ref currentWays, ref shortWay, checkedNode);
-                currentWays--;
             }
 
-            return;
+            return 0;
+        }*/
+
+        /*public void FindPath(T start, T end)
+        {
+            foreach (var i in nodes)
+                i.Visited = false;
+            DFS(start, end);
+        }*/
+
+        /// <summary>
+        /// Поиск компонентов связности
+        /// </summary>
+        /// <returns></returns>
+        public int SearchConnectivityComponent()
+        {
+
+
+            return 0;
         }
-  }
+
+        /// <summary>
+        /// Поиск количества путей ко всем узлам через заданный поиск.
+        /// </summary>
+        /// <param name="start"> Стартовый узел </param>
+        /// <returns></returns>
+        public Dictionary<T, int> ShortWaysToAllNodes(T start, TypeSearch type)
+        {
+            var allWays = new Dictionary<T, int>();
+
+            foreach (var node in nodes)
+            {
+                var nameNode = node.Key;
+                if (start?.ToString() == nameNode?.ToString())
+                    continue;
+
+                int result = 0;
+
+                switch (type)
+                {
+                    case TypeSearch.BreadthFirstSearch:
+                        result = BFS(start, nameNode);
+                        break;
+                    case TypeSearch.DepthFirstSearch:
+                        result = DFS(start, nameNode);
+                        break;
+                }
+
+                allWays.Add(nameNode, result);
+            }
+
+            return allWays;
+        }
+    }
+
+    public class Node<T>
+    {
+        public T Name { get; set; }
+        public List<T> ConnectedNodes { get; set; }
+        public bool Visited { get; set; }
+        public int Level { get; set; }
+    }
 }

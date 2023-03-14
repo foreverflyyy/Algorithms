@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using BreadthAndDepth_FirstSearch;
+using System.Text;
 
 namespace Graphs
 {
@@ -11,42 +12,18 @@ namespace Graphs
             var matrixAdjacency = new FileStream("matrixInput.txt", FileMode.OpenOrCreate);
 
             // Создаём дерево, по которому будем выполнять обход
-            Dictionary<char, List<char>> result = CreateGraph(matrixAdjacency);
+            Dictionary<char, List<char>> graph = CreateGraph(matrixAdjacency);
             matrixAdjacency?.Close();
 
-            var methods = new MethodsForSearch<char>(result);
+            var methods = new MethodsForSearch<char>(graph);
 
-            Console.WriteLine($"BREADTH-FIRST SEARCH: ");
+            char startNode = 'A';
+            var dictWays = methods.ShortWaysToAllNodes(startNode, TypeSearch.DepthFirstSearch);
 
-            int shortWay = methods.BFS('A', 'D');
-            if (shortWay == 0)
-                Console.WriteLine("Short way didn't find");
-            else
-                Console.WriteLine($"Short way: {shortWay}");
+            Console.WriteLine($"All ways from node - {startNode}");
 
-            Console.WriteLine();
-            Console.WriteLine();
-
-            Console.WriteLine($"DEPTH-FIRST SEARCH: ");
-
-            shortWay = 0;
-            int ways = 0;
-            methods.RecurtionDFS('A', 'D', ref ways, ref shortWay, new List<char> { });
-            if (shortWay != 0)
-                Console.WriteLine($"Short way: {shortWay}");
-            else
-                Console.WriteLine("Short way didn't find");
-
-            Console.WriteLine();
-            Console.WriteLine();
-
-            Console.WriteLine($"Recursion DEPTH-FIRST SEARCH: ");
-
-            shortWay = methods.DFS('A', 'D');
-            if (shortWay != 0)
-                Console.WriteLine($"Short way: {shortWay}");
-            else
-                Console.WriteLine("Short way didn't find");
+            foreach(var node in dictWays)
+                Console.WriteLine($"To node: {node.Key}, short road: {node.Value}");
         }
 
         /// <summary>
