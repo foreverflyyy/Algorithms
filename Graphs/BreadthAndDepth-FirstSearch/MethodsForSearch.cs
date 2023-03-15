@@ -14,8 +14,7 @@ namespace Graphs
         public MethodsForSearch(Dictionary<T, List<T>> nodes)
         {
             this.nodes = nodes;
-            foreach (var node in nodes)
-                nodesList.Add(new Node<T>() { Name = node.Key, ConnectedNodes = node.Value, Visited = false });
+            ConversationDictToListNodes();
         }
 
         /// <summary>
@@ -132,50 +131,59 @@ namespace Graphs
 
             return 0;
         }
-        
+
         /// <summary>
         /// Поиск в глубину (поиск кратчайшего расстояния до узла)
         /// </summary>
         /// <param name="start"> Стартовый узел </param>
         /// <param name="end"> Конечный узел </param>
         /// <returns></returns>
-        /*public int DFSWithLevels(T start, T end)
+        public int DFSWithLevels(T start, T end)
         {
             if (start.ToString() == end.ToString())
                 return 0;
 
             int currentWays = 1;    // Счётчик сколько прошли пути
-            var stack = new Stack<T>();
+            int shortWays = 1;    // Счётчик кратчайшего пути
+            var stack = new Stack<Node<T>>();
 
-            // Список пройденных узлов
             var firstNode = nodesList.FirstOrDefault(x => x.Name?.ToString() == start?.ToString());
             firstNode.Visited = true;
+            firstNode.CheckedConnectedNodes = 1;
+
+            var previous = firstNode;
 
             // Заполняем первый уровень поиска (у начального узла вводим смежные ему узлы)
-            var connectedNodes = nodesList[start];
-            foreach (var node in connectedNodes)
+            foreach (var node in firstNode.ConnectedNodes)
                 stack.Push(node);
 
             while (stack.Count != 0)
             {
                 var first = stack.Pop();
 
-                // Проверка, смотрели ли мы уже этот узел
-                if (checkedNode.Contains(first))
+                // Проверка соответствию нашей цели
+                if (first?.ToString() == end?.ToString())
                 {
-                    currentWays--;
+                    if(shortWays == 0)
+                    {
+                        shortWays = currentWays;
+                        continue;
+                    }
+                }
+                first.Previous = previous;
+
+                // Проверка, смотрели ли мы уже этот узел
+                if (first.Visited)
+                {
+                    previous = FindWayBack(previous, ref currentWays)?.Previous;
                     continue;
                 }
 
-                // Проверка соответствию нашей цели
-                if (first?.ToString() == end?.ToString())
-                    return currentWays;
-
-                // Добавление в список проверенных узлов
-                checkedNode.Add(first);
+                var connectedNode = first.ConnectedNodes.Where(x => !x.Visited).ToList();
 
                 // Добавление следующего уровня поиска
-                connectedNodes = nodes[first].Where(x => !checkedNode.Contains(x)).ToList();
+                /*foreach (var node in connectedNodes)
+                    stack.Push(node);
 
                 if (connectedNodes.Count == 0)
                 {
@@ -184,13 +192,58 @@ namespace Graphs
                 }
 
                 foreach (var node in connectedNodes)
-                    stack.Push(node);
+                    stack.Push(node);*/
 
                 currentWays++;
             }
 
             return 0;
-        }*/
+        }
+
+        public Node<T> FindWayBack(Node<T> previous, ref int currentWays)
+        {
+            while (true)
+            {
+                var different = previous.ConnectedNodes.Count - previous.CheckedConnectedNodes;
+                if (different == 0)
+                {
+                    previous = previous.Previous;
+                    currentWays--;
+                    continue;
+                }
+
+                currentWays--;
+                break;
+            }
+
+            return previous;
+        }
+
+        /// <summary>
+        /// Перевод из словаря в список с классом Node
+        /// </summary>
+        /// <returns></returns>
+        public void ConversationDictToListNodes()
+        {
+            foreach (var node in nodes)
+            {
+                nodesList.Add(new Node<T>() { Name = node.Key, ConnectedNodes = new List<Node<T>>(), Visited = false, CheckedConnectedNodes = 0});
+            }
+            foreach (var nodeDict in nodes)
+            {
+                var listNodes = nodeDict.Value;
+                var needNode = nodesList.FirstOrDefault(x => x.Name?.ToString() == nodeDict.Key?.ToString());
+                var choiceNodes = new List<Node<T>>();
+
+                foreach (var linkNode in listNodes)
+                {
+                    var oneOfNode = nodesList.FirstOrDefault(x => x.Name?.ToString() == linkNode?.ToString());
+                    choiceNodes.Add(oneOfNode);
+                }
+
+                needNode.ConnectedNodes.AddRange(choiceNodes);
+            }
+        }
 
         /*public void FindPath(T start, T end)
         {
@@ -247,8 +300,9 @@ namespace Graphs
     public class Node<T>
     {
         public T Name { get; set; }
-        public List<T> ConnectedNodes { get; set; }
+        public List<Node<T>> ConnectedNodes { get; set; }
         public bool Visited { get; set; }
-        public int Level { get; set; }
+        public Node<T> Previous { get; set; }
+        public int CheckedConnectedNodes { get; set; }
     }
 }

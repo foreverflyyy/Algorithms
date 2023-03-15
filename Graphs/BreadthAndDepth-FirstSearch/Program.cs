@@ -42,7 +42,7 @@ namespace Graphs
             // декодируем байты в строку (получаем строку)
             string matrixFromFile = Encoding.Default.GetString(buffer);
 
-            string[] rowsMatrix = matrixFromFile.Split(new string[] { "\r\n" }, StringSplitOptions.None);
+            string[] rowsMatrix = matrixFromFile.Split(new string[] { "\n" }, StringSplitOptions.None);
 
             // Работаем с каждым узлом графа в отдельности
             for(int i = 0; i < rowsMatrix.Length; i++)
