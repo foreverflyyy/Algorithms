@@ -17,13 +17,17 @@ namespace Graphs
 
             var methods = new MethodsForSearch<char>(graph);
 
-            char startNode = 'A';
-            var dictWays = methods.ShortWaysToAllNodes(startNode, TypeSearch.DepthFirstSearch);
+            /*char startNode = 'A';
+            var dictWays = methods.ShortWaysToNodes(startNode, TypeSearch.BreadthFirstSearch);
 
             Console.WriteLine($"All ways from node - {startNode}");
 
             foreach(var node in dictWays)
-                Console.WriteLine($"To node: {node.Key}, short road: {node.Value}");
+                Console.WriteLine($"To node: {node.Key}, short road: {node.Value}");*/
+
+            methods.ConnectivityComponent(TypeSearch.BreadthFirstSearch);
+            Console.WriteLine();
+            methods.ConnectivityComponent(TypeSearch.DepthFirstSearch);
         }
 
         /// <summary>
