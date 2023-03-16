@@ -1,5 +1,4 @@
 ﻿using BreadthAndDepth_FirstSearch;
-using System.Collections.Generic;
 
 namespace Graphs
 {
@@ -11,6 +10,7 @@ namespace Graphs
     {
         public Dictionary<T, List<T>> nodes = new Dictionary<T, List<T>>();
         public List<Node<T>> nodesList = new List<Node<T>>();
+        public List<Node<T>> newUndirectedGraph = new List<Node<T>>();
 
         // Список вершин в текущей компоненте связности
         public List<Node<T>> Component = new List<Node<T>>(); 
@@ -143,21 +143,31 @@ namespace Graphs
         #endregion
         public void ConnectivityComponent(TypeSearch type)
         {
-            for (int i = 0; i < nodesList.Count; ++i)
-                nodesList[i].Visited = false;
+            var checkListNodes = new List<Node<T>>();
 
-            for (int i = 0; i < nodesList.Count; ++i)
-                if (!nodesList[i].Visited)
+            if(type == TypeSearch.StrongConnectivityComponent)
+                checkListNodes = newUndirectedGraph;
+            else
+                checkListNodes = nodesList;
+            
+            for (int i = 0; i < checkListNodes.Count; ++i)
+                checkListNodes[i].Visited = false;
+
+            for (int i = 0; i < checkListNodes.Count; ++i)
+                if (!checkListNodes[i].Visited)
                 {
                     Component.Clear();
 
                     switch (type)
                     {
                         case TypeSearch.BreadthFirstSearch:
-                            BFS(nodesList[i]);
+                            BFS(checkListNodes[i]);
                             break;
                         case TypeSearch.DepthFirstSearch:
-                            DFS(nodesList[i]); ;
+                            DFS(checkListNodes[i]);
+                            break;
+                        case TypeSearch.StrongConnectivityComponent:
+                            DFS(checkListNodes[i]);
                             break;
                     }
 
@@ -165,6 +175,52 @@ namespace Graphs
                     for (int j = 0; j < Component.Count(); ++j)
                         Console.WriteLine($" {Component[j].Name}");
                 }
+        }
+
+        public void StrongConnectivityComponent()
+        {
+            // Для каждой пары вершин определяем, являются ли они сильно связанные
+            // это значит, что существует путь из первой вершины по вторую и из второй в первую
+            var strongComponentList = new List<List<Node<T>>>();
+
+            for(int i = 0; i < nodesList.Count(); i++)
+            {
+                for(int j = 0; j < nodesList.Count(); j++)
+                {
+                    if (i == j) continue;
+
+                    var firstStrongComponent = BFS(nodesList[i].Name, nodesList[j].Name);
+                    var secondStrongComponent = BFS(nodesList[j].Name, nodesList[i].Name);
+
+                    if(firstStrongComponent != 0 && secondStrongComponent != 0)
+                        strongComponentList.Add(new List<Node<T>> { nodesList[i], nodesList[j] });
+                }
+            }
+
+            // на основе сильной связанности вершин строим неориентированный граф
+            newUndirectedGraph = new List<Node<T>>();
+
+            for (int i = 0; i < strongComponentList.Count(); i++)
+            {
+                var firstKey = strongComponentList[i].First();
+
+                if (!newUndirectedGraph.Any(x => x.Name?.ToString() == firstKey.Name?.ToString()))
+                    newUndirectedGraph.Add(new Node<T> { Name = firstKey.Name, ConnectedNodes = new List<Node<T>>() });
+                else
+                    continue;
+
+                for (int j = 0; j < strongComponentList.Count(); j++)
+                {
+                    if(firstKey.Name?.ToString() == strongComponentList[j].First().Name?.ToString())
+                    {
+                        newUndirectedGraph.FirstOrDefault(x => x.Name?.ToString() == firstKey.Name?.ToString())
+                            .ConnectedNodes.Add(strongComponentList[j][1]);
+                    }
+                }
+            }
+
+            // компоненты связности построенного графа будут являться компонентами сильной связности орграфа
+            ConnectivityComponent(TypeSearch.StrongConnectivityComponent);
         }
 
         /// <summary>

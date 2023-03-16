@@ -28,6 +28,8 @@ namespace Graphs
             methods.ConnectivityComponent(TypeSearch.BreadthFirstSearch);
             Console.WriteLine();
             methods.ConnectivityComponent(TypeSearch.DepthFirstSearch);
+            Console.WriteLine();
+            methods.StrongConnectivityComponent();
         }
 
         /// <summary>
