@@ -106,7 +106,7 @@ namespace Graphs
                 var connectedNodes = first.ConnectedNodes.Where(x => !x.Visited).ToList();
 
                 foreach (var currentNode in connectedNodes)
-                    queue.Enqueue(node);
+                    queue.Enqueue(currentNode);
             }
         }
 
