@@ -205,7 +205,7 @@ namespace Graphs
                 // Берём первый элемент из списка - узел, к которому будут привязываться другие узлы
                 var firstKey = strongComponentList[i].First();
 
-                // Проверяем создавали мы уже этот ОСНОВНОЙ наш узел.
+                // Проверяем создавали мы уже этот ОСНОВНОЙ наш узел. Если да, то ищем другой основной узел для создания
                 var currentMainNode = newUndirectedGraph.FirstOrDefault(x => x.Name?.ToString() == firstKey.Name?.ToString());
 
                 if (currentMainNode == null)
@@ -220,6 +220,10 @@ namespace Graphs
                     // Если основные узлы совпадают, то добавляем привязанные к нему узлы
                     if (firstKey.Name?.ToString() == strongComponentList[j].First().Name?.ToString())
                     {
+                        // Если раньше уже добавляли связанный узел, то проматываем
+                        if (currentMainNode.ConnectedNodes.Any(x => x.Name?.ToString() == strongComponentList[j][1].Name?.ToString()))
+                            continue;
+
                         // Проверка, был ли у нас уже создан узел, который нам нужно привязать
                         // если был, то просто добавляем, если нет, то создаём
                         var connectedNode = newUndirectedGraph.FirstOrDefault(x => x.Name?.ToString() == strongComponentList[j][1].Name?.ToString());
@@ -227,6 +231,7 @@ namespace Graphs
                         if (connectedNode == null)
                         {
                             var newNode = new Node<T> { Name = strongComponentList[j][1].Name, ConnectedNodes = new List<Node<T>>() };
+                            newUndirectedGraph.Add(newNode);
                             currentMainNode?.ConnectedNodes.Add(newNode);
                         }
                         else
