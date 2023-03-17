@@ -9,7 +9,7 @@ namespace Graphs
         static void Main()
         {
             // Берём файл для чтения матрицы
-            var matrixAdjacency = new FileStream("matrixInput.txt", FileMode.OpenOrCreate);
+            var matrixAdjacency = new FileStream("matrixInput3.txt", FileMode.OpenOrCreate);
 
             // Создаём дерево, по которому будем выполнять обход
             Dictionary<char, List<char>> graph = CreateGraph(matrixAdjacency);
@@ -25,9 +25,10 @@ namespace Graphs
             foreach(var node in dictWays)
                 Console.WriteLine($"To node: {node.Key}, short road: {node.Value}");*/
 
-            methods.ConnectivityComponent(TypeSearch.BreadthFirstSearch);
+            /*methods.ConnectivityComponent(TypeSearch.BreadthFirstSearch);
             Console.WriteLine();
-            methods.ConnectivityComponent(TypeSearch.DepthFirstSearch);
+            methods.ConnectivityComponent(TypeSearch.DepthFirstSearch);*/
+
             Console.WriteLine();
             methods.StrongConnectivityComponent();
         }

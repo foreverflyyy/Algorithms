@@ -202,19 +202,37 @@ namespace Graphs
 
             for (int i = 0; i < strongComponentList.Count(); i++)
             {
+                // Берём первый элемент из списка - узел, к которому будут привязываться другие узлы
                 var firstKey = strongComponentList[i].First();
 
-                if (!newUndirectedGraph.Any(x => x.Name?.ToString() == firstKey.Name?.ToString()))
-                    newUndirectedGraph.Add(new Node<T> { Name = firstKey.Name, ConnectedNodes = new List<Node<T>>() });
-                else
-                    continue;
+                // Проверяем создавали мы уже этот ОСНОВНОЙ наш узел.
+                var currentMainNode = newUndirectedGraph.FirstOrDefault(x => x.Name?.ToString() == firstKey.Name?.ToString());
 
+                if (currentMainNode == null)
+                {
+                    currentMainNode = new Node<T> { Name = firstKey.Name, ConnectedNodes = new List<Node<T>>() };
+                    newUndirectedGraph.Add(currentMainNode);
+                }
+
+                // Добавляем к основному узлу все привязанные узлы
                 for (int j = 0; j < strongComponentList.Count(); j++)
                 {
-                    if(firstKey.Name?.ToString() == strongComponentList[j].First().Name?.ToString())
+                    // Если основные узлы совпадают, то добавляем привязанные к нему узлы
+                    if (firstKey.Name?.ToString() == strongComponentList[j].First().Name?.ToString())
                     {
-                        newUndirectedGraph.FirstOrDefault(x => x.Name?.ToString() == firstKey.Name?.ToString())
-                            .ConnectedNodes.Add(strongComponentList[j][1]);
+                        // Проверка, был ли у нас уже создан узел, который нам нужно привязать
+                        // если был, то просто добавляем, если нет, то создаём
+                        var connectedNode = newUndirectedGraph.FirstOrDefault(x => x.Name?.ToString() == strongComponentList[j][1].Name?.ToString());
+
+                        if (connectedNode == null)
+                        {
+                            var newNode = new Node<T> { Name = strongComponentList[j][1].Name, ConnectedNodes = new List<Node<T>>() };
+                            currentMainNode?.ConnectedNodes.Add(newNode);
+                        }
+                        else
+                        {
+                            currentMainNode?.ConnectedNodes.Add(connectedNode);
+                        }
                     }
                 }
             }
