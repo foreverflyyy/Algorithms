@@ -1,4 +1,5 @@
 ﻿using BreadthAndDepth_FirstSearch;
+using System.Text;
 
 namespace Graphs
 {
@@ -8,17 +9,62 @@ namespace Graphs
     /// <typeparam name="T"> Тип данных, который будет у значения узла </typeparam>
     public class MethodsForSearch<T>
     {
-        public Dictionary<T, List<T>> nodes = new Dictionary<T, List<T>>();
-        public List<Node<T>> nodesList = new List<Node<T>>();
-        public List<Node<T>> newUndirectedGraph = new List<Node<T>>();
+        private Dictionary<T, List<T>> nodes = new Dictionary<T, List<T>>();
+        private List<Node<T>> nodesList = new List<Node<T>>();
+        private List<Node<T>> newUndirectedGraph = new List<Node<T>>();
 
         // Список вершин в текущей компоненте связности
-        public List<Node<T>> Component = new List<Node<T>>(); 
+        public List<Node<T>> Component = new List<Node<T>>();
 
         public MethodsForSearch(Dictionary<T, List<T>> nodes)
         {
             this.nodes = nodes;
             ConversationDictToListNodes();
+        }
+
+        /// <summary>
+        /// Создание графа из матрицы смежности
+        /// </summary>
+        /// <param name="matrixAdjacency"> Передаваемая матрица смежности </param>
+        /// <returns></returns>
+        static public Dictionary<char, List<char>> CreateGraph(FileStream matrixAdjacency)
+        {
+            var allNodes = new Dictionary<char, List<char>>();
+
+            // выделяем массив для считывания данных из файла
+            byte[] buffer = new byte[matrixAdjacency.Length];
+            // считываем данные
+            matrixAdjacency.Read(buffer, 0, buffer.Length);
+            // декодируем байты в строку (получаем строку)
+            string matrixFromFile = Encoding.Default.GetString(buffer);
+
+            string[] rowsMatrix = matrixFromFile.Split(new string[] { "\n" }, StringSplitOptions.None);
+
+            // Работаем с каждым узлом графа в отдельности
+            for (int i = 0; i < rowsMatrix.Length; i++)
+            {
+                var valuesLine = rowsMatrix[i].Split(new char[] { ' ' });
+
+                // Создаём новый узел и добавляем в него связанные узлы
+                allNodes.Add(GetNeedSymbol(i), new List<char>() { });
+
+                for (int j = 0; j < valuesLine.Length; j++)
+                    if (Convert.ToInt32(valuesLine[j]) == 1)
+                        allNodes[GetNeedSymbol(i)].Add(GetNeedSymbol(j));
+            }
+
+            return allNodes;
+        }
+
+        /// <summary>
+        /// Получение буквы по индексу алфавита
+        /// </summary>
+        /// <param name="index"></param>
+        /// <returns></returns>
+        static public char GetNeedSymbol(int index)
+        {
+            string allSymbols = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            return allSymbols[index];
         }
 
         /// <summary>
