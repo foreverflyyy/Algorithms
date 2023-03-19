@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -38,7 +39,12 @@ namespace Graphs
             // декодируем байты в строку (получаем строку)
             string matrixFromFile = Encoding.Default.GetString(buffer);
 
-            string[] rowsMatrix = matrixFromFile.Split(new string[] { "\n" }, StringSplitOptions.None);
+            string[] rowsMatrix = new string[matrixFromFile.Length];
+
+            if (matrixFromFile.Contains("\r"))
+                rowsMatrix = matrixFromFile.Split(new string[] { "\r\n" }, StringSplitOptions.None);
+            else
+                rowsMatrix = matrixFromFile.Split(new string[] { "\n" }, StringSplitOptions.None);
 
             // Работаем с каждым узлом графа в отдельности
             for (int i = 0; i < rowsMatrix.Length; i++)
@@ -49,8 +55,12 @@ namespace Graphs
                 graph.Add(GetNeedSymbol(i), new Dictionary<char, double>() { });
 
                 for (int j = 0; j < valuesLine.Length; j++)
-                    if (Convert.ToDouble(valuesLine[j]) != -1)
-                        graph[GetNeedSymbol(i)].Add(GetNeedSymbol(j), Convert.ToDouble(valuesLine[j]));
+                {
+                    if (valuesLine[j] == "oo")
+                        continue;
+
+                    graph[GetNeedSymbol(i)].Add(GetNeedSymbol(j), Convert.ToDouble(valuesLine[j]));
+                }
             }
 
             return graph;
@@ -72,6 +82,9 @@ namespace Graphs
         /// </summary>
         public void AlgorithmDijkstra(T start, T end)
         {
+            Parents.Clear();
+            Costs.Clear();
+
             // Заполняем хэш-таблицу стоимости
             Costs[start] = 0;
             foreach(var node in Graph)
@@ -173,9 +186,64 @@ namespace Graphs
         /// <summary>
         /// Алгорим Беллмана-Форда
         /// </summary>
-        public void AlgorithmBellmanFord()
+        public void AlgorithmBellmanFord(T start)
         {
+            Costs.Clear();
 
+            // Заполняем хэш-таблицу стоимостями, стартовый узел - 0, остальные бесконечность
+            Costs[start] = 0;
+
+            foreach (var node in Graph)
+                if(node.Key?.ToString() != start?.ToString())
+                    Costs.Add(node.Key, Infinity);
+
+            // Проходим ВСЕ ребра по n-1 раз, где n - количество вершин
+            for(int i = 0; i < Graph.Count - 1; i++)
+            {
+                // Берём каждый узел и проходимся по каждому идущему от него ребру
+                foreach(var node in Graph)
+                {
+                    foreach(var connectedNode in Graph[node.Key])
+                    {
+                        // Если мы нашли более короткий путь до привязанного узла(connectedNode), то обновляем его стоимость
+                        // то есть стоимость node + стоимость от него до connectedNode оказалась меньше стоимости самой connectedNode
+                        if (Costs[connectedNode.Key] > Costs[node.Key] + connectedNode.Value)
+                            Costs[connectedNode.Key] = Costs[node.Key] + connectedNode.Value;
+                    }
+                }
+            }
+
+            ShowShortWays(start);
+
+            // Проверка на присутствие в графе цикла отрицательной стоимости
+            // Для этого проходим все ребра графа и проверяем, что нет более короткого пути для любой из вершин
+            bool flag = false;
+
+            foreach (var node in Graph)
+                foreach (var connectedNode in Graph[node.Key])
+                    if (Costs[connectedNode.Key] > Costs[node.Key] + connectedNode.Value)
+                    {
+                        Console.WriteLine("Graph contains a negative-weight cycle!!!");
+                        Costs[connectedNode.Key] = Costs[node.Key] + connectedNode.Value;
+                        flag = true;
+                    }
+
+            if(flag)
+                ShowShortWays(start);
+        }
+
+        /// <summary>
+        /// Вывод кратчайших путей до всех остадльных узлов
+        /// </summary>
+        /// <param name="start"> Node from we show to others nodes </param>
+        public void ShowShortWays(T start)
+        {
+            // Вывод кратчайших путей до всех остадльных узлов
+            Console.WriteLine($"Short way from node {start}: ");
+
+            foreach (var node in Costs)
+                if (node.Key?.ToString() != start?.ToString())
+                    Console.WriteLine($"to node {node.Key} - {node.Value}");
         }
     }
 }
