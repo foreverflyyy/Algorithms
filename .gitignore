@@ -87,6 +87,16 @@ Graphs/ShortestPaths/ShortestPaths.csproj
 Graphs/ShortestPaths/bin
 Graphs/ShortestPaths/obj
 
+# NP-completeness:
+
+NP-completeness/.idea
+NP-completeness/.vs
+NP-completeness/NP-completeness.sln
+
+NP-completeness/TaskAboutBackpack/TaskAboutBackpack.csproj
+NP-completeness/TaskAboutBackpack/bin
+NP-completeness/TaskAboutBackpack/obj
+
 
 
 
