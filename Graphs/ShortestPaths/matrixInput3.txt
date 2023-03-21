@@ -1,0 +1,5 @@
+oo 10 oo 30 100
+oo oo 50 oo oo
+oo oo oo oo 10
+oo oo 20 oo 60
+oo oo oo oo oo

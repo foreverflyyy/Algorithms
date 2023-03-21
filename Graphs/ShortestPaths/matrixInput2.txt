@@ -1,0 +1,6 @@
+oo 7 9 oo oo 14
+7 oo 10 15 oo oo
+9 10 oo 11 oo 2
+oo 15 11 oo 6 oo
+oo oo oo 6 oo 9
+14 oo 2 oo 9 oo

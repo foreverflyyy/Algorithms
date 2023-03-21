@@ -1,0 +1,4 @@
+oo 6 2 oo
+oo oo oo 1
+oo 3 oo 5
+oo oo oo oo

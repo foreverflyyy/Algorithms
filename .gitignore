@@ -75,9 +75,29 @@ Trees/OperationsForBT/obj
 
 # Graphs:
 
-/Graphs/.vs
+Graphs/.idea
+Graphs/.vs
+Graphs/graphs.sln
 
-/Graphs/breadthFirstSearch/bin/*
-/Graphs/breadthFirstSearch/obj/*
+Graphs/BreadthAndDepth-FirstSearch/BreadthAndDepth-FirstSearch.csproj
+Graphs/BreadthAndDepth-FirstSearch/bin
+Graphs/BreadthAndDepth-FirstSearch/obj
+
+Graphs/ShortestPaths/ShortestPaths.csproj
+Graphs/ShortestPaths/bin
+Graphs/ShortestPaths/obj
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
