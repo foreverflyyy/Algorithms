@@ -1,75 +1,58 @@
+.gitignore
+
 # Sorting
 
 Sorting/.idea
-Sorting/binarySearch.sln
-
-Sorting/binarySearch/binarySearch.csproj
 Sorting/binarySearch/bin
 Sorting/binarySearch/obj
 
-Sorting/combSort/combSort.csproj
 Sorting/combSort/bin
 Sorting/combSort/obj
 
-Sorting/heapSort/heapSort.csproj
 Sorting/heapSort/bin
 Sorting/heapSort/obj
 
-Sorting/insertionSort/insertionSort.csproj
 Sorting/insertionSort/bin
 Sorting/insertionSort/obj
 
-Sorting/mergeSort/mergeSort.csproj
 Sorting/mergeSort/bin
 Sorting/mergeSort/obj
 
-Sorting/polyPhaseMerge/polyPhaseMerge.csproj
 Sorting/polyPhaseMerge/bin
 Sorting/polyPhaseMerge/obj
 
-Sorting/quickSort/quickSort.csproj
 Sorting/quickSort/bin
 Sorting/quickSort/obj
 
-Sorting/radixSort/radixSort.csproj
 Sorting/radixSort/bin
 Sorting/radixSort/obj
 
-Sorting/selectionSort/selectionSort.csproj
 Sorting/selectionSort/bin
 Sorting/selectionSort/obj
 
-Sorting/shellSort/shellSort.csproj
 Sorting/shellSort/bin
 Sorting/shellSort/obj
 
 #HashTable
 
 HashTable/.idea
-HashTable/HashTable.sln
 
-HashTable/ChainedHash/ChainedHash.csproj
 HashTable/ChainedHash/bin
 HashTable/ChainedHash/obj
 
-HashTable/OpenAddressingHash/OpenAddressingHash.csproj
 HashTable/OpenAddressingHash/bin
 HashTable/OpenAddressingHash/obj
 
 #Trees
 
 Trees/.idea
-Trees/trees.sln
 
-Trees/StackBT/StackBT.csproj
 Trees/StackBT/bin
 Trees/StackBT/obj
 
-Trees/RecursionBT/RecursionBT.csproj
 Trees/RecursionBT/bin
 Trees/RecursionBT/obj
 
-Trees/OperationsForBT/OperationsForBT.csproj
 Trees/OperationsForBT/bin
 Trees/OperationsForBT/obj
 
@@ -77,27 +60,17 @@ Trees/OperationsForBT/obj
 
 Graphs/.idea
 Graphs/.vs
-Graphs/graphs.sln
 
-Graphs/BreadthAndDepth-FirstSearch/BreadthAndDepth-FirstSearch.csproj
 Graphs/BreadthAndDepth-FirstSearch/bin
 Graphs/BreadthAndDepth-FirstSearch/obj
 
-Graphs/ShortestPaths/ShortestPaths.csproj
 Graphs/ShortestPaths/bin
 Graphs/ShortestPaths/obj
 
+# NP-completeness:
 
+NP-completeness/.idea
+NP-completeness/.vs
 
-
-
-
-
-
-
-
-
-
-
-
-
+NP-completeness/TaskAboutBackpack/bin
+NP-completeness/TaskAboutBackpack/obj
