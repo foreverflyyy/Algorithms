@@ -1,5 +1,7 @@
 ﻿using BreadthAndDepth_FirstSearch;
+using System.IO;
 using System.Text;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Graphs
 {
@@ -27,7 +29,7 @@ namespace Graphs
         /// </summary>
         /// <param name="matrixAdjacency"> Передаваемая матрица смежности </param>
         /// <returns></returns>
-        static public Dictionary<char, List<char>> CreateGraph(FileStream matrixAdjacency)
+        static public Dictionary<char, List<char>> CreateGraphFromMatrixAdjacency(FileStream matrixAdjacency)
         {
             var allNodes = new Dictionary<char, List<char>>();
 
@@ -57,6 +59,69 @@ namespace Graphs
         }
 
         /// <summary>
+        /// Перевод из матрицы инцидентности в матрицу смежности
+        /// </summary>
+        /// <param name="matrixAdjacency"> Передаваемая матрица инцидентности </param>
+        /// <returns></returns>
+        static public void ChangeMatrixIncidenceToMatrixAdjacency(FileStream matrixIncidence)
+        {
+            var matrixAdjacency = new List<string>();
+
+            // выделяем массив для считывания данных из файла
+            byte[] buffer = new byte[matrixIncidence.Length];
+            // считываем данные
+            matrixIncidence.Read(buffer, 0, buffer.Length);
+            // декодируем байты в строку (получаем строку)
+            string matrixFromFile = Encoding.Default.GetString(buffer);
+
+            string[] rowsMatrix = new string[matrixFromFile.Length];
+
+            if (matrixFromFile.Contains("\r"))
+                rowsMatrix = matrixFromFile.Split(new string[] { "\r\n" }, StringSplitOptions.None);
+            else
+                rowsMatrix = matrixFromFile.Split(new string[] { "\n" }, StringSplitOptions.None);
+
+            var defaultMatrix = new List<List<string>>();
+
+            for(int i = 0; i < rowsMatrix.Length; i++)
+                defaultMatrix.Add(rowsMatrix[i].Split(new char[] { ' ' }).ToList());
+
+            List<List<string>> columnsMatrix = TranspositionMatrix<string>(defaultMatrix);
+
+            List<string> result = new List<string>();
+
+            /*foreach(var row in rows)
+            {
+                for (int i = 0; i < row.Count; i++)
+                {
+                    if (row[i] == "-1")
+                    {
+                        rows.Add(rowsMatrix[i].Split(new char[] { ' ' }).ToList());
+
+                        break;
+                    }
+                    else if (row[i] == "1")
+                    {
+
+                    }
+
+                }
+            }*/
+            
+            string path = @"D:\dream\Algorithms\Graphs\BreadthAndDepth-FirstSearch\matrixInput8.txt";
+            using (FileStream fstream = new FileStream(path, FileMode.OpenOrCreate))
+            {
+                foreach (var line in matrixAdjacency)
+                {
+                    // преобразуем строку в байты
+                    byte[] buff = Encoding.Default.GetBytes(line);
+                    // запись массива байтов в файл
+                    fstream.Write(buff, 0, buff.Length);
+                }
+            }
+        }
+
+        /// <summary>
         /// Получение буквы по индексу алфавита
         /// </summary>
         /// <param name="index"></param>
@@ -65,6 +130,25 @@ namespace Graphs
         {
             string allSymbols = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
             return allSymbols[index];
+        }
+
+        /// <summary>
+        /// Транспонирование матрицы
+        /// </summary>
+        /// <param name=""></param>
+        /// <returns></returns>
+        static public List<List<N>> TranspositionMatrix<N>(List<List<N>> matrix)
+        {
+            List<List<N>> newMatrix = new List<List<N>>();
+
+            for (int i = 0; i < matrix.First().Count; i++)
+                    newMatrix.Add(new List<N>());
+
+            for (int i = 0; i < matrix.First().Count; i++)
+                for (int j = 0; j < matrix.Count; j++)
+                    newMatrix[i].Add(matrix[j][i]);
+
+            return newMatrix;
         }
 
         /// <summary>
