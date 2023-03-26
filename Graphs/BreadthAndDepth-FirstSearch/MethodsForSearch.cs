@@ -59,14 +59,23 @@ namespace Graphs
         }
 
         /// <summary>
+        /// Получение буквы по индексу алфавита
+        /// </summary>
+        /// <param name="index"> Индекс буквы в алфавите </param>
+        /// <returns></returns>
+        static public char GetNeedSymbol(int index)
+        {
+            string allSymbols = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            return allSymbols[index];
+        }
+
+        /// <summary>
         /// Перевод из матрицы инцидентности в матрицу смежности
         /// </summary>
         /// <param name="matrixAdjacency"> Передаваемая матрица инцидентности </param>
         /// <returns></returns>
-        static public void ChangeMatrixIncidenceToMatrixAdjacency(FileStream matrixIncidence)
+        static public void ChangeMatrixIncidenceToMatrixAdjacency(FileStream matrixIncidence, TypeGraph typeGraph)
         {
-            var matrixAdjacency = new List<string>();
-
             // выделяем массив для считывания данных из файла
             byte[] buffer = new byte[matrixIncidence.Length];
             // считываем данные
@@ -76,6 +85,7 @@ namespace Graphs
 
             string[] rowsMatrix = new string[matrixFromFile.Length];
 
+            // Разбиваем на массив по рядам
             if (matrixFromFile.Contains("\r"))
                 rowsMatrix = matrixFromFile.Split(new string[] { "\r\n" }, StringSplitOptions.None);
             else
@@ -83,60 +93,97 @@ namespace Graphs
 
             var defaultMatrix = new List<List<string>>();
 
-            for(int i = 0; i < rowsMatrix.Length; i++)
+            for (int i = 0; i < rowsMatrix.Length; i++)
                 defaultMatrix.Add(rowsMatrix[i].Split(new char[] { ' ' }).ToList());
 
-            List<List<string>> columnsMatrix = TranspositionMatrix<string>(defaultMatrix);
+            var matrixAdjacency = new string[defaultMatrix.Count, defaultMatrix.Count];
 
-            List<string> result = new List<string>();
-
-            /*foreach(var row in rows)
+            // Ищем по каждому столбцу символы "-1" - в какой узел приходит и "1" - из какого выходит
+            // и на основе этого формируем матрицу смежности 
+            for (int i = 0; i < defaultMatrix[0].Count; i++)
             {
-                for (int i = 0; i < row.Count; i++)
+                int numberRow = -1;
+                int numberColumn = -1;
+
+                if(typeGraph == TypeGraph.WeightedUndirectedGraph)
                 {
-                    if (row[i] == "-1")
+                    for (int j = 0; j < defaultMatrix.Count; j++)
                     {
-                        rows.Add(rowsMatrix[i].Split(new char[] { ' ' }).ToList());
-
-                        break;
+                        if (defaultMatrix[j][i] == "1" && numberRow == -1)
+                            numberRow = j;
+                        else if (defaultMatrix[j][i] == "1" && numberRow != -1)
+                            numberColumn = j;
+                        else if (defaultMatrix[j][i] == "-1")
+                            numberColumn = j;
                     }
-                    else if (row[i] == "1")
+
+                    // Заполняем матрицу смежности по найденным координатам ряда и столбца, остальные значения присваиваем нуль
+                    for (int j = 0; j < defaultMatrix.Count; j++)
                     {
-
+                        if (j == numberColumn)
+                        {
+                            matrixAdjacency[numberRow, numberColumn] = "1";
+                            matrixAdjacency[numberColumn, numberRow] = "1";
+                        }
+                        else if (matrixAdjacency[numberRow, j] == null)
+                        {
+                            matrixAdjacency[numberRow, j] = "0";
+                            matrixAdjacency[j, numberRow] = "0";
+                        }
                     }
-
                 }
-            }*/
-            
-            string path = @"D:\dream\Algorithms\Graphs\BreadthAndDepth-FirstSearch\matrixInput8.txt";
-            using (FileStream fstream = new FileStream(path, FileMode.OpenOrCreate))
-            {
-                foreach (var line in matrixAdjacency)
+                else if(typeGraph == TypeGraph.WeightedOrientedGraph)
                 {
-                    // преобразуем строку в байты
-                    byte[] buff = Encoding.Default.GetBytes(line);
-                    // запись массива байтов в файл
-                    fstream.Write(buff, 0, buff.Length);
+                    for (int j = 0; j < defaultMatrix.Count; j++)
+                    {
+                        if (defaultMatrix[j][i] == "1")
+                            numberRow = j;
+                        else if (defaultMatrix[j][i] == "-1")
+                            numberColumn = j;
+                    }
+
+                    // Заполняем матрицу смежности по найденным координатам ряда и столбца, остальные значения присваиваем нуль
+                    for (int j = 0; j < defaultMatrix.Count; j++)
+                    {
+                        if (j == numberColumn)
+                        {
+                            matrixAdjacency[numberRow, numberColumn] = "1";
+                        }
+                        else if (matrixAdjacency[numberRow, j] == null)
+                        {
+                            matrixAdjacency[numberRow, j] = "0";
+                        }
+                    }
                 }
             }
-        }
 
-        /// <summary>
-        /// Получение буквы по индексу алфавита
-        /// </summary>
-        /// <param name="index"></param>
-        /// <returns></returns>
-        static public char GetNeedSymbol(int index)
-        {
-            string allSymbols = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-            return allSymbols[index];
+            string[] resultAdjacencyMatrix = new string[matrixAdjacency.GetLength(0)];
+
+            // На основе полученной матрицы переводим её в массив строк с пробелами для записи в файл
+            for (int i = 0; i < matrixAdjacency.GetLength(0); i++)
+            {
+                for (int j = 0; j < matrixAdjacency.GetLength(1); j++)
+                {
+                    if (j != matrixAdjacency.GetLength(1) - 1)
+                        resultAdjacencyMatrix[i] += matrixAdjacency[i, j] + " ";
+                    else
+                        resultAdjacencyMatrix[i] += matrixAdjacency[i, j];
+                }
+            }
+
+            string path = @"D:\dream\Algorithms\Graphs\BreadthAndDepth-FirstSearch\matrixInput8.txt";
+            using (StreamWriter streamWrite = new StreamWriter(path))
+            {
+                foreach (var line in resultAdjacencyMatrix)
+                    streamWrite.WriteLine(line);
+            }
+
+            // BUG: самое правое нижнее значение не отображается в полученном файле
         }
 
         /// <summary>
         /// Транспонирование матрицы
         /// </summary>
-        /// <param name=""></param>
-        /// <returns></returns>
         static public List<List<N>> TranspositionMatrix<N>(List<List<N>> matrix)
         {
             List<List<N>> newMatrix = new List<List<N>>();

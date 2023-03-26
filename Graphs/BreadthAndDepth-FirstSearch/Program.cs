@@ -13,7 +13,7 @@ namespace BreadthAndDepth_FirstSearch
             var fileMatrixIncidence = new FileStream(path, FileMode.OpenOrCreate);
 
             // Переводим матрицу инцидентности в матрицу смежности=
-            MethodsForSearch<char>.ChangeMatrixIncidenceToMatrixAdjacency(fileMatrixIncidence);
+            MethodsForSearch<char>.ChangeMatrixIncidenceToMatrixAdjacency(fileMatrixIncidence, TypeGraph.WeightedUndirectedGraph);
             fileMatrixIncidence?.Close();
 
             var fileMatrixAdjacency = new FileStream("matrixInput8.txt", FileMode.OpenOrCreate);
