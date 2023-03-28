@@ -138,7 +138,47 @@ namespace Graphs
         /// </summary>
         public void AlgorithmPrima()
         {
+            checkedNodes.Clear();
 
+            // Создаем новый граф - который и будет минимальным остовным
+            var underGraph = new Dictionary<T, Dictionary<T, double>>();
+
+            // Заносим в новый подграф любую вершину (в данном случае первую)
+            var firstNode = Graph.First();
+            underGraph.Add(Graph.First().Key, new Dictionary<T, double>());
+
+            checkedNodes.Add(Graph.First().Key);
+
+            // Заносим минимальные ребра в очередь с приоритетами (двоичная куча)
+            // Приоритет вершины определяется значением, которое равно минимальному весу ребер вершины
+            var priorityQueue = new PriorityQueue<T, double>();
+
+            foreach(var node in Graph)
+                if (!checkedNodes.Contains(node.Key))
+                {
+                    var minCostEdge = FindMinCostEdge(node.Value);
+                    priorityQueue.Enqueue(node.Key, minCostEdge);
+                }
+
+            // Пока очередь не закончиться
+            while(priorityQueue.Count != 0)
+            {
+                var minCount = priorityQueue.Dequeue();
+            }
+        }
+
+        /// <summary>
+        /// Поиск ребра с минимальным весом у вершины
+        /// </summary>
+        public double FindMinCostEdge(Dictionary<T, double> connectedNodes)
+        {
+            var minCostEdge = Infinity;
+
+            foreach (var connectedNode in connectedNodes)
+                if (minCostEdge > connectedNode.Value)
+                    minCostEdge = connectedNode.Value;
+
+            return minCostEdge;
         }
     }
     
