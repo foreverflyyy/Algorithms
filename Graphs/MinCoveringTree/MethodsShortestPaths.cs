@@ -134,36 +134,6 @@ namespace Graphs
         }
 
         /// <summary>
-        /// Поиск компонентов связности через поиск в глубину
-        /// </summary>
-        public void ConnectivityComponent()
-        {
-            checkedNodes.Clear();
-
-            foreach(var node in Graph)
-                if (!checkedNodes.Contains(node.Key))
-                {
-                    // Ищем компонент связности и добавляем её в список других компонент
-                    var component = new List<T>();
-                    DFS(node.Key, ref component);
-                    Components.Add(component);
-                }
-        }
-
-        /// <summary>
-        /// Поиск в глубину (для отыскания компонент связности)
-        /// </summary>
-        public void DFS(T node, ref List<T> component)
-        {
-            checkedNodes.Add(node);
-            component.Add(node);
-
-            foreach(var connectedNodes in Graph?.GetValueOrDefault(node))
-                if (!checkedNodes.Contains(connectedNodes.Key))
-                    DFS(connectedNodes.Key, ref component);
-        }
-
-        /// <summary>
         /// Алгоритм Прима для поиска минимального покрывающего (остовного) дерева
         /// </summary>
         public void AlgorithmPrima()
