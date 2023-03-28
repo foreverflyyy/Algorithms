@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Numerics;
 using System.Runtime.CompilerServices;
@@ -14,7 +15,10 @@ namespace Graphs
         private Dictionary<T, Dictionary<T, double>> Graph = new Dictionary<T, Dictionary<T, double>>();  // Хэш-таблица с узлами и их ребрами с весами
         private Dictionary<T, double> Costs = new Dictionary<T, double>();    // Хэш-таблица со стоимостью всех узлов
         private List<T> checkedNodes = new List<T>(); // Список проверенных узлов
-        
+
+        // Список компонент связности
+        public List<List<T>> Components = new List<List<T>>();
+
         private const double Infinity = Double.PositiveInfinity;
 
         public MethodsShortestPaths(Dictionary<T, Dictionary<T, double>> graph)
@@ -68,8 +72,6 @@ namespace Graphs
         /// <summary>
         /// Получение буквы по индексу алфавита
         /// </summary>
-        /// <param name="index"></param>
-        /// <returns></returns>
         static public char GetNeedSymbol(int index)
         {
             string allSymbols = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -82,6 +84,9 @@ namespace Graphs
         /// </summary>
         public void MoreLongerAlgorithmKruskala()
         {
+            // Строим компоненты связности
+            ConnectivityComponent();
+
             // Подсчитаем количество ребер
             int allEdges = 0;
 
@@ -130,13 +135,44 @@ namespace Graphs
         /// </summary>
         public void AlgorithmKruskala()
         {
+            // Строим компоненты связности
+            ConnectivityComponent();
+
             // Создаем новый граф со всеми вершинами основного графа (он и будет в итоге минимальным остовным)
             var underGraph = new T[Graph.Count];
 
             foreach (var node in Graph)
                 underGraph.Append(node.Key);
+        }
 
-            
+        /// <summary>
+        /// Поиск компонентов связности через поиск в глубину
+        /// </summary>
+        public void ConnectivityComponent()
+        {
+            checkedNodes.Clear();
+
+            foreach(var node in Graph)
+                if (!checkedNodes.Contains(node.Key))
+                {
+                    // Ищем компонент связности и добавляем её в список других компонент
+                    var component = new List<T>();
+                    DFS(node.Key, ref component);
+                    Components.Add(component);
+                }
+        }
+
+        /// <summary>
+        /// Поиск в глубину (для отыскания компонент связности)
+        /// </summary>
+        public void DFS(T node, ref List<T> component)
+        {
+            checkedNodes.Add(node);
+            component.Add(node);
+
+            foreach(var connectedNodes in Graph?.GetValueOrDefault(node))
+                if (!checkedNodes.Contains(connectedNodes.Key))
+                    DFS(connectedNodes.Key, ref component);
         }
 
         /// <summary>
