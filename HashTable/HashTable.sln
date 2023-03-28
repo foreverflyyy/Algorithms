@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChainedHash", "ChainedHash\ChainedHash.csproj", "{A1493735-47A9-4C4F-8002-BCDC121088A0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenAddressingHash", "OpenAddressingHash\OpenAddressingHash.csproj", "{2B55E0EC-10F7-4826-A430-F69A8412DA2A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A1493735-47A9-4C4F-8002-BCDC121088A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A1493735-47A9-4C4F-8002-BCDC121088A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A1493735-47A9-4C4F-8002-BCDC121088A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A1493735-47A9-4C4F-8002-BCDC121088A0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2B55E0EC-10F7-4826-A430-F69A8412DA2A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2B55E0EC-10F7-4826-A430-F69A8412DA2A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2B55E0EC-10F7-4826-A430-F69A8412DA2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2B55E0EC-10F7-4826-A430-F69A8412DA2A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
