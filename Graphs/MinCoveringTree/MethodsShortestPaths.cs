@@ -7,6 +7,7 @@ using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace Graphs
 {
@@ -79,70 +80,57 @@ namespace Graphs
         }
 
         /// <summary>
-        /// Медленные Алгоритм Крускала для поиска минимального покрывающего (остовного) дерева
+        /// Алгоритм Крускала для поиска минимального покрывающего (остовного) дерева
         /// O (M log N + N2) - сложность.
-        /// </summary>
-        public void MoreLongerAlgorithmKruskala()
-        {
-            // Строим компоненты связности
-            ConnectivityComponent();
-
-            // Подсчитаем количество ребер
-            int allEdges = 0;
-
-            foreach(var node in Graph)
-                allEdges += node.Value.Count;
-
-            allEdges /= 2;
-
-            // Отсортированный список ребер с узлами
-            var listWithEdges = new List<Dictionary<int, Dictionary<int, int>>>(allEdges);
-
-
-            listWithEdges.Sort();
-
-            int cost = 0; // вес
-            var res = new List<Dictionary<int, int>>();
-
-            // Список принадлежности вершины тому или иному дереву
-            var treeId = new List<T>(Graph.Count);
-
-            foreach(var node in Graph)
-                treeId.Add(node.Key);
-
-            /*for (int i = 0; i < allEdges; ++i)
-            {
-                int a = listWithEdges[i].second.first, b = listWithEdges[i].second.second, l = g[i].first;
-                if (treeId[a].ToString() != treeId[b].ToString())
-                {
-                    cost += l;
-                    res.Add(new Dictionary<int, int>(a, b));
-
-                    var oldId = treeId[b];
-                    var newId = treeId[a];
-
-                    for (int j = 0; j < Graph.Count; ++j)
-                        if (treeId[j] == oldId)
-                            treeId[j] = newId;
-                }
-            }*/
-
-
-        }
-
-        /// <summary>
-        /// Более быстрый Алгоритм Крускала через систему непересекающихся множеств для поиска минимального остовного дерева
         /// </summary>
         public void AlgorithmKruskala()
         {
-            // Строим компоненты связности
-            ConnectivityComponent();
+            // Создаем новый граф - который и будет минимальным остовным
+            var underGraph = new List<Edge<T>>();  // Хэш-таблица с узлами и их ребрами с весами
 
-            // Создаем новый граф со всеми вершинами основного графа (он и будет в итоге минимальным остовным)
-            var underGraph = new T[Graph.Count];
+            // Создаем множество, где будут храниться все ребра отсортированные по стоимости
+            var allEdges = new List<Edge<T>>();
+
+            foreach(var node in Graph)
+                foreach(var connectedNode in node.Value)
+                {
+                    // Если ребра ещё нет в списке, то заносим его
+                    if(!allEdges.Any(x => (x.FirstNode?.ToString() == node.Key?.ToString() && x.SecondNode?.ToString() == connectedNode.Key?.ToString())
+                        || (x.FirstNode?.ToString() == connectedNode.Key?.ToString() && x.SecondNode?.ToString() == node.Key?.ToString())))
+                    {
+                        allEdges.Add(new Edge<T>() { FirstNode = node.Key, SecondNode = connectedNode.Key, Cost = connectedNode.Value });
+                    }
+                }
+
+            allEdges.Sort(new EdgeComparer<T>());
+
+            // Заносим каждую верщину как отдельное множество
+            var nodesAsPlenty = new List<List<T>>();
 
             foreach (var node in Graph)
-                underGraph.Append(node.Key);
+                nodesAsPlenty.Add(new List<T> { node.Key });
+
+            // Проходимся по ребрам в порядке возрастания и проверяем, если оба узла ребра не находяться в одном множестве, то
+            // добавляем в подграф и объединяем множества
+            foreach(var edge in allEdges)
+            {
+                var firstPlenty = nodesAsPlenty.FirstOrDefault(x => x.Contains(edge.FirstNode));
+                var secondPlenty = nodesAsPlenty.FirstOrDefault(x => x.Contains(edge.SecondNode));
+                if(firstPlenty != secondPlenty)
+                {
+                    underGraph.Add(edge);
+                    firstPlenty?.AddRange(secondPlenty);
+                    nodesAsPlenty.Remove(secondPlenty);
+                }
+            }
+
+            // Отображаем получившийся подграф:
+            Console.WriteLine("Minimum spanning tree have edges:\n");
+
+            foreach (var edge in underGraph)
+                Console.Write($"{edge.FirstNode} - {edge.SecondNode}, ");
+
+            Console.WriteLine();
         }
 
         /// <summary>
@@ -182,5 +170,23 @@ namespace Graphs
         {
 
         }
+    }
+    
+    public class Edge<N>
+    {
+        public N FirstNode { get; set; }
+        public N SecondNode { get; set; }
+        public double Cost { get; set; }
+    }
+
+    public class EdgeComparer<N> : IComparer<Edge<N>>
+    {
+        public int Compare(Edge<N>? firstEdge, Edge<N>? secondEdge)
+        {
+            if (firstEdge is null || secondEdge is null)
+                throw new ArgumentException("Некорректное значение параметра");
+            return Convert.ToInt32(firstEdge.Cost - secondEdge.Cost);
+        }
+
     }
 }

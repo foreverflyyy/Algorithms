@@ -15,7 +15,7 @@ namespace ShortestPaths {
             var graph = MethodsShortestPaths<char>.CreateGraph(matrixAdjacency);
             var methods = new MethodsShortestPaths<char>(graph);
 
-            methods.MoreLongerAlgorithmKruskala();
+            methods.AlgorithmKruskala();
             //methods.AlgorithmKruskala();
             //methods.AlgorithmPrima();
         }

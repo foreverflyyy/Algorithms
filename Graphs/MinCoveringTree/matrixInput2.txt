@@ -6,4 +6,4 @@ oo oo oo oo oo 1 oo oo 2
 oo oo 1 oo oo oo oo oo 2
 2 oo oo 3 4 oo oo oo oo
 oo 5 oo oo 4 oo oo oo oo
-oo oo oo 2 oo oo 2 oo oo
+oo oo 2 oo oo 2 oo oo oo
