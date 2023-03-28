@@ -7,13 +7,15 @@ namespace ShortestPaths {
         static void Main(string[] args)
         {
             // Берём файл для чтения матрицы
-            var matrixAdjacency = new FileStream("matrixInput5.txt", FileMode.OpenOrCreate);
+            string path = @"D:\dream\Algorithms\Graphs\MinCoveringTree\matrixInput1.txt";
+            var matrixAdjacency = new FileStream(path, FileMode.OpenOrCreate);
 
             // Создаём граф, по которому будем выполнять обход
             var graph = MethodsShortestPaths<char>.CreateGraph(matrixAdjacency);
             var methods = new MethodsShortestPaths<char>(graph);
 
-
+            methods.AlgorithmKruskala();
+            methods.AlgorithmPrima();
         }
     }
 }

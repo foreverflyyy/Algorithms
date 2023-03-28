@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,7 +12,7 @@ namespace Graphs
     public class MethodsShortestPaths<T>
     {
         private Dictionary<T, Dictionary<T, double>> Graph = new Dictionary<T, Dictionary<T, double>>();  // Хэш-таблица с узлами и их ребрами с весами
-        
+        private Dictionary<T, double> Costs = new Dictionary<T, double>();    // Хэш-таблица со стоимостью всех узлов
         private List<T> checkedNodes = new List<T>(); // Список проверенных узлов
         
         private const double Infinity = Double.PositiveInfinity;
@@ -76,15 +77,70 @@ namespace Graphs
         }
 
         /// <summary>
-        /// Алгоритм Крускала
+        /// Медленные Алгоритм Крускала для поиска минимального покрывающего (остовного) дерева
+        /// O (M log N + N2) - сложность.
         /// </summary>
-        public void AlgorithmKruskala()
+        public void MoreLongerAlgorithmKruskala()
         {
+            // Подсчитаем количество ребер
+            int allEdges = 0;
+
+            foreach(var node in Graph)
+                allEdges += node.Value.Count;
+
+            allEdges /= 2;
+
+            // Отсортированный список ребер с узлами
+            var listWithEdges = new List<Dictionary<int, Dictionary<int, int>>>(allEdges);
+
+
+            listWithEdges.Sort();
+
+            int cost = 0; // вес
+            var res = new List<Dictionary<int, int>>();
+
+            // Список принадлежности вершины тому или иному дереву
+            var treeId = new List<T>(Graph.Count);
+
+            foreach(var node in Graph)
+                treeId.Add(node.Key);
+
+            /*for (int i = 0; i < allEdges; ++i)
+            {
+                int a = listWithEdges[i].second.first, b = listWithEdges[i].second.second, l = g[i].first;
+                if (treeId[a].ToString() != treeId[b].ToString())
+                {
+                    cost += l;
+                    res.Add(new Dictionary<int, int>(a, b));
+
+                    var oldId = treeId[b];
+                    var newId = treeId[a];
+
+                    for (int j = 0; j < Graph.Count; ++j)
+                        if (treeId[j] == oldId)
+                            treeId[j] = newId;
+                }
+            }*/
+
 
         }
 
         /// <summary>
-        /// Алгоритм Прима
+        /// Более быстрый Алгоритм Крускала через систему непересекающихся множеств для поиска минимального остовного дерева
+        /// </summary>
+        public void AlgorithmKruskala()
+        {
+            // Создаем новый граф со всеми вершинами основного графа (он и будет в итоге минимальным остовным)
+            var underGraph = new T[Graph.Count];
+
+            foreach (var node in Graph)
+                underGraph.Append(node.Key);
+
+            
+        }
+
+        /// <summary>
+        /// Алгоритм Прима для поиска минимального покрывающего (остовного) дерева
         /// </summary>
         public void AlgorithmPrima()
         {
