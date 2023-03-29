@@ -14,7 +14,6 @@ namespace Graphs
     public class MethodsShortestPaths<T>
     {
         private Dictionary<T, Dictionary<T, double>> Graph = new Dictionary<T, Dictionary<T, double>>();  // Хэш-таблица с узлами и их ребрами с весами
-        private Dictionary<T, double> Costs = new Dictionary<T, double>();    // Хэш-таблица со стоимостью всех узлов
         private List<T> checkedNodes = new List<T>(); // Список проверенных узлов
 
         // Список компонент связности
@@ -138,47 +137,108 @@ namespace Graphs
         /// </summary>
         public void AlgorithmPrima()
         {
-            checkedNodes.Clear();
+            /*checkedNodes.Clear();
 
             // Создаем новый граф - который и будет минимальным остовным
-            var underGraph = new Dictionary<T, Dictionary<T, double>>();
-
-            // Заносим в новый подграф любую вершину (в данном случае первую)
-            var firstNode = Graph.First();
-            underGraph.Add(Graph.First().Key, new Dictionary<T, double>());
-
-            checkedNodes.Add(Graph.First().Key);
+            var underGraph = new Dictionary<T, ConnectedNode<T>>();
 
             // Заносим минимальные ребра в очередь с приоритетами (двоичная куча)
             // Приоритет вершины определяется значением, которое равно минимальному весу ребер вершины
-            var priorityQueue = new PriorityQueue<T, double>();
+            var priorityQueue = new PriorityQueue<NodeAndConnectedNode<T>, double>();
 
             foreach(var node in Graph)
-                if (!checkedNodes.Contains(node.Key))
-                {
-                    var minCostEdge = FindMinCostEdge(node.Value);
-                    priorityQueue.Enqueue(node.Key, minCostEdge);
-                }
+            {
+                var minCostEdge = FindMinCostEdge(node.Value);
+                priorityQueue.Enqueue(new NodeAndConnectedNode<T> { Name = node.Key, ConnectedNode = minCostEdge}, minCostEdge.Cost);
+            }
 
             // Пока очередь не закончиться
             while(priorityQueue.Count != 0)
             {
                 var minCount = priorityQueue.Dequeue();
+
+                if(!checkedNodes.Contains(minCount.Name))
+                {
+                    checkedNodes.Add(minCount.Name);
+                    checkedNodes.Add(minCount.ConnectedNode.Name);
+                    underGraph.Add(minCount.Name, minCount.ConnectedNode);
+                }
             }
+
+            // Отображаем получившийся подграф:
+            Console.WriteLine("Minimum spanning tree have edges:\n");
+
+            foreach (var edge in underGraph)
+                Console.WriteLine($"{edge.Key} - {edge.Value.Name}");*/
+
+            Console.WriteLine();
+        }
+        
+        /// <summary>
+        /// Алгоритм Прима для поиска минимального покрывающего (остовного) дерева
+        /// </summary>
+        public void AlgorithmPrima_2()
+        {
+            checkedNodes.Clear();
+
+            // Создаем новый граф - который и будет минимальным остовным
+            var underGraph = new Dictionary<T, ConnectedNode<T>>();
+
+            // Заносим минимальные ребра в очередь с приоритетами (двоичная куча)
+            // Приоритет вершины определяется значением, которое равно минимальному весу ребер вершины
+            var priorityQueue = new PriorityQueue<NodeAndConnectedNode<T>, double>();
+
+            // Заносим в приоритетную очередь все узлы 
+            foreach(var node in Graph)
+                priorityQueue.Enqueue(new NodeAndConnectedNode<T> { Name = node.Key,  
+                    ConnectedNode = Graph.GetValueOrDefault(node.Key).Keys.ToList() }, Infinity);
+
+            // Начинаем с первого узла
+            var a = priorityQueue.Dequeue();
+            priorityQueue.Enqueue(a, 0);
+
+            // Пока очередь не закончиться
+            while(priorityQueue.Count != 0)
+            {
+                var minCount = priorityQueue.Dequeue();
+
+                /*foreach(var node in minCount.ConnectedNode)
+                {
+                    if(priorityQueue.First())
+                }
+
+                if(!checkedNodes.Contains(minCount.Name))
+                {
+                    checkedNodes.Add(minCount.Name);
+                    checkedNodes.Add(minCount.ConnectedNode.Name);
+                    underGraph.Add(minCount.Name, minCount.ConnectedNode);
+                }*/
+            }
+
+            // Отображаем получившийся подграф:
+            Console.WriteLine("Minimum spanning tree have edges:\n");
+
+            foreach (var edge in underGraph)
+                Console.WriteLine($"{edge.Key} - {edge.Value.Name}");
+
+            Console.WriteLine();
         }
 
         /// <summary>
         /// Поиск ребра с минимальным весом у вершины
         /// </summary>
-        public double FindMinCostEdge(Dictionary<T, double> connectedNodes)
+        public ConnectedNode<T> FindMinCostEdge(Dictionary<T, double> connectedNodes)
         {
-            var minCostEdge = Infinity;
+            var minConnectNode = new ConnectedNode<T>() { Name = default(T), Cost = Infinity};
 
             foreach (var connectedNode in connectedNodes)
-                if (minCostEdge > connectedNode.Value)
-                    minCostEdge = connectedNode.Value;
+                if (minConnectNode.Cost > connectedNode.Value)
+                {
+                    minConnectNode.Name = connectedNode.Key;
+                    minConnectNode.Cost = connectedNode.Value;
+                }
 
-            return minCostEdge;
+            return minConnectNode;
         }
     }
     
@@ -198,5 +258,17 @@ namespace Graphs
             return Convert.ToInt32(firstEdge.Cost - secondEdge.Cost);
         }
 
+    }
+
+    public class NodeAndConnectedNode<N>
+    {
+        public N Name { get; set; }
+        public List<N> ConnectedNode { get; set; }
+    }
+    
+    public class ConnectedNode<N>
+    {
+        public N Name { get; set; }
+        public double Cost { get; set; }
     }
 }
