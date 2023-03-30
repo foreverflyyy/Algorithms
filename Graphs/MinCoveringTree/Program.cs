@@ -7,8 +7,8 @@ namespace ShortestPaths {
         static void Main(string[] args)
         {
             // Берём файл для чтения матрицы
-            string path = @"D:\dream\Algorithms\Graphs\MinCoveringTree\matrixInput2.txt";
-            //string path = @"D:\workSpaceNU\primat\Algorithms\Graphs\MinCoveringTree\matrixInput1.txt";
+            //string path = @"D:\dream\Algorithms\Graphs\MinCoveringTree\matrixInput2.txt";
+            string path = @"D:\workSpaceNU\primat\Algorithms\Graphs\MinCoveringTree\matrixInput2.txt";
             var matrixAdjacency = new FileStream(path, FileMode.OpenOrCreate);
 
             // Создаём граф, по которому будем выполнять обход
@@ -16,7 +16,7 @@ namespace ShortestPaths {
             var methods = new MethodsShortestPaths<char>(graph);
 
             //methods.AlgorithmKruskala();
-            methods.AlgorithmPrima_2();
+            methods.AlgorithmPrima();
         }
     }
 }
