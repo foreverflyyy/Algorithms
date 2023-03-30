@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Numerics;
+using System.Reflection.Emit;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -134,6 +135,7 @@ namespace Graphs
 
         /// <summary>
         /// Алгоритм Прима для поиска минимального покрывающего (остовного) дерева
+        /// Реализация через очередь с приоритетом, не соблюдено присоединение ребер к уже известным вершинам (вразброс)
         /// </summary>
         public void AlgorithmPrima()
         {
@@ -171,19 +173,21 @@ namespace Graphs
             }
 
             // Отображаем получившийся подграф:
-            Console.WriteLine("Minimum spanning tree have edges:\n");
+            Console.WriteLine("\nMinimum spanning tree have edges:\n");
 
             foreach (var edge in underGraph)
                 Console.WriteLine($"{edge.Key} - {edge.Value.Name}");
-
-            Console.WriteLine();
         }
 
         /// <summary>
         /// Алгоритм Прима для поиска минимального покрывающего (остовного) дерева
+        /// Реализация через словарь и соблюдено последовательное присоединения ребер к уже найденным вершинам
+        /// Имеет недостаток, если в графе присутствует несколько компонент связности, то он перестаёт искать
         /// </summary>
-        public void AlgorithmPrima_2(T start)
+        public void AlgorithmPrima(T start)
         {
+            checkedNodes.Clear();
+
             // Создаем новый граф - который и будет минимальным остовным
             var underGraph = new Dictionary<T, ConnectedNode<T>>();
 
@@ -200,23 +204,35 @@ namespace Graphs
 
             // Заносим первую вершину
             underGraph.Add(start, dictNodes[start]);
-            dictNodes.Remove(start);
-
-            while(dictNodes.Count != 0)
+            checkedNodes.Add(start);
+            checkedNodes.Add(dictNodes[start].Name);
+            
+            // Пока количество проверенных вершин не равно количество вершин вообще
+            while(checkedNodes.Count != Graph.Count)
             {
-                var first = dictNodes.FirstOrDefault(x => underGraph.ContainsKey(x.Value.Name));
-                underGraph.Add(start, dictNodes[start]);
-                dictNodes.Remove(start);
-                T last = start;
+                // Достаём ребро, один узел которого ещё не исследован, а второй уже проверен
+                var nearest = dictNodes.FirstOrDefault(x => !checkedNodes.Contains(x.Key) && checkedNodes.Contains(x.Value.Name));
+
+                // Если мы закончили с одной компонентой связности
+                if(nearest.ToString() == "[\0, ]")
+                {
+                    nearest = dictNodes.FirstOrDefault(x => !checkedNodes.Contains(x.Key));
+                    checkedNodes.Add(nearest.Key);
+                    checkedNodes.Add(nearest.Value.Name);
+                    underGraph.Add(nearest.Key, nearest.Value);
+                    continue;
+                }
+
+                // Добавляем новый узел
+                checkedNodes.Add(nearest.Key);
+                underGraph.Add(nearest.Key, nearest.Value);
             }
 
             // Отображаем получившийся подграф:
-            Console.WriteLine("Minimum spanning tree have edges:\n");
+            Console.WriteLine("\nMinimum spanning tree have edges:\n");
 
             foreach (var edge in underGraph)
                 Console.WriteLine($"{edge.Key} - {edge.Value.Name}");
-
-            Console.WriteLine();
         }
 
         /// <summary>
