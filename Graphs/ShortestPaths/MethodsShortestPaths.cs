@@ -28,7 +28,7 @@ namespace Graphs
         /// </summary>
         /// <param name="matrixAdjacency"> Передаваемая матрица смежности </param>
         /// <returns></returns>
-        static public Dictionary<char, Dictionary<char, double>> CreateGraph(FileStream matrixAdjacency)
+        static public Dictionary<char, Dictionary<char, double>> CreateGraphFrom(FileStream matrixAdjacency)
         {
             var graph = new Dictionary<char, Dictionary<char, double>>();
 
@@ -65,7 +65,7 @@ namespace Graphs
 
             return graph;
         }
-
+        
         /// <summary>
         /// Получение буквы по индексу алфавита
         /// </summary>

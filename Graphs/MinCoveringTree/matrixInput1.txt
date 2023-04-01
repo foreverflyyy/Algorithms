@@ -1,0 +1,6 @@
+oo 7 8 oo oo oo
+7 oo 11 2 oo oo
+8 11 oo 6 9 oo
+oo 2 6 oo 11 9
+oo oo 9 11 oo 10
+oo oo oo 9 10 oo
