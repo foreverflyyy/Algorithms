@@ -67,6 +67,12 @@ Graphs/BreadthAndDepth-FirstSearch/obj
 Graphs/ShortestPaths/bin
 Graphs/ShortestPaths/obj
 
+Graphs/EulerianPath/bin
+Graphs/EulerianPath/obj
+
+Graphs/MinCoveringTree/bin
+Graphs/MinCoveringTree/obj
+
 # NP-completeness:
 
 NP-completeness/.idea
