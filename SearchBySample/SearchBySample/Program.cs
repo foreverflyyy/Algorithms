@@ -8,14 +8,14 @@ namespace AlgorithmKMP
         static void Main(string[] args)
         {
             // Берём файл для чтения матрицы
-            string path = @"D:\dream\Algorithms\SearchBySample\AlgorithmKMP\data.txt";
+            string path = @"D:\dream\Algorithms\SearchBySample\SearchBySample\data.txt";
             var fileWithText = new StreamReader(path);
-
-            string? text = fileWithText.ReadLine();
-            fileWithText?.Close();
+            var text = fileWithText.ReadToEnd();
 
             Console.WriteLine("Enter word sample: ");
-            string sample = Console.ReadLine();
+            //string? sample = fileWithText.ReadLine();
+            string sample = "игла";
+            fileWithText?.Close();
 
             var methods = new MethodsForSearch(text);
             methods.AlgorithmKMP(sample);
@@ -24,4 +24,10 @@ namespace AlgorithmKMP
 }
 // Исходная строка считывается из некоторого файла. Строка поиска вводится с клавиатуры.
 
-// Реализовать алгоритм Кнута-Морриса-Пратта для поиска по образцу
+// аaabbaabaabaabbaaabaabaabaabaabbaabb
+/*
+    Реализовать алгоритм поиска по образцу с помощью конечного автомата
+    Реализовать алгоритм Кнута-Морриса-Пратта для поиска по образцу
+    Реализовать алгоритм Бойера-Мура для поиска по образцу
+    Реализовать алгоритм Рабина для поиска по образцу
+*/
