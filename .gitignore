@@ -81,24 +81,13 @@ NP-completeness/.vs
 NP-completeness/TaskAboutBackpack/bin
 NP-completeness/TaskAboutBackpack/obj
 
-
-
 # Search by sample:
 
 SearchBySample/.idea
 SearchBySample/.vs
 
-SearchBySample/AlgorithmKMP/bin
-SearchBySample/AlgorithmKMP/obj
-
-SearchBySample/AlgorithmBoyerMoore/bin
-SearchBySample/AlgorithmBoyerMoore/obj
-
-SearchBySample/AlgorithmFiniteMachine/bin
-SearchBySample/AlgorithmFiniteMachine/obj
-
-SearchBySample/AlgorithmRabin/bin
-SearchBySample/AlgorithmRabin/obj
+SearchBySample/SearchBySample/bin
+SearchBySample/SearchBySample/obj
 
 
 
