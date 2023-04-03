@@ -15,6 +15,29 @@ namespace AlgorithmKMP
         }
 
         /// <summary>
+        /// Простой поиск образца в строке «методом грубой силы»
+        /// </summary>
+        /// <param name="sample"> Передаваемая строка образец </param>
+        public int SimpleSearch(string sample)
+        {
+            // i-с какого места строки  ищем
+            // j-с какого места образца ищем
+            for (int i = 0; i < Text.Length; ++i)
+            {
+                for (int j = 0; ; ++j)
+                {
+                    if (Text[i + j] != sample[j]) 
+                        break;
+
+                    if ((j + 1) == sample.Length)
+                        return i;
+                }
+            }
+
+            return -1;
+        }
+
+        /// <summary>
         /// Реализация Алгоритма Кнута-Морриса-Пратта
         /// </summary>
         /// <param name="sample"> Передаваемая строка образец </param>
@@ -101,11 +124,11 @@ namespace AlgorithmKMP
         }
 
         /// <summary>
-        /// Реализация Алгоритма 
+        /// Реализация Алгоритма Бойера Мура
         /// </summary>
         /// <param name="sample"> Передаваемая строка образец </param>
         /// <returns></returns>
-        public void Algorithm(string sample)
+        public void AlgorithmBoyerMoore(string sample)
         {
             
         }
