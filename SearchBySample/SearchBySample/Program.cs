@@ -9,18 +9,22 @@ namespace AlgorithmKMP
         {
             // Берём файл для чтения матрицы
             //string path = @"D:\dream\Algorithms\SearchBySample\SearchBySample\data.txt";
-            string path = @"D:\workSpaceNU\primat\Algorithms\SearchBySample\SearchBySample\data1.txt";
+            string path = @"D:\workSpaceNU\primat\Algorithms\SearchBySample\SearchBySample\data.txt";
             var fileWithText = new StreamReader(path);
             var text = fileWithText.ReadToEnd();
 
-            Console.WriteLine("Enter word sample: ");
+            //Console.WriteLine("Enter word sample: ");
             //string? sample = fileWithText.ReadLine();
             string sample = "игла";
+            //string sample = "abcdabcd";
             fileWithText?.Close();
 
             var methods = new MethodsForSearch(text);
-            var a = methods.SimpleSearch(sample);
-            methods.AlgorithmKMP(sample);
+
+            //methods.SimpleSearch(sample);
+            //methods.AlgorithmKMP(sample);
+            //methods.AlgorithmBoyerMoore(sample);
+            methods.AlgorithmRabinCarp(sample);
         }
     }
 }
