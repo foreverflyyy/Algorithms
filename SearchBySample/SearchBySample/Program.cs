@@ -20,8 +20,8 @@
             //methods.SimpleSearch(sample);
             //methods.AlgorithmKMP(sample);
             //methods.AlgorithmBoyerMoore(sample);
-            //methods.AlgorithmRabinCarp(sample);
-            methods.FiniteStateMachine(sample);
+            methods.AlgorithmRabinCarp(sample);
+            //methods.FiniteStateMachine(sample);
         }
     }
 }

@@ -13,6 +13,9 @@ namespace AlgorithmKMP
     {
         public string Text;
 
+        // Для перевода(кодировки ASIIC) char в int и наоборот
+        private readonly int allNumberSymbols = 256;
+
         public MethodsForSearch(string text)
         {
             Text = text;
@@ -383,7 +386,62 @@ namespace AlgorithmKMP
         /// </summary>
         public void AlgorithmRabinCarp(string pattern)
         {
+            // Главный номер
+            int q = 101;
 
+            int patternNums = pattern.Length;
+            int textNums = Text.Length;
+
+            int i, j;
+
+            int p = 0; // hash value for pattern
+            int t = 0; // hash value for txt
+
+            int h = 1;
+
+            // The value of h would be "pow(d, M-1)%q"
+            for (i = 0; i < patternNums - 1; i++)
+                h = (h * allNumberSymbols) % q;
+
+            // Calculate the hash value of pattern and first window of text
+            for (i = 0; i < patternNums; i++)
+            {
+                p = (allNumberSymbols * p + pattern[i]) % q;
+                t = (allNumberSymbols * t + Text[i]) % q;
+            }
+
+            // Slide the pattern over text one by one
+            for (i = 0; i <= textNums - patternNums; i++)
+            {
+                // Check the hash values of current window of text and pattern. If the hash
+                // values match then only check for characters one by one
+                if (p == t)
+                {
+                    /* Check for characters one by one */
+                    for (j = 0; j < patternNums; j++)
+                    {
+                        if (Text[i + j] != pattern[j])
+                            break;
+                    }
+
+                    // if p == t and pat[0...M-1] = txt[i, i+1, ...i+M-1]
+                    if (j == patternNums)
+                        Console.WriteLine(
+                            "Pattern found at index " + i);
+                }
+
+                // Calculate hash value for next window of text:
+                // Remove leading digit, add trailing digit
+                if (i < textNums - patternNums)
+                {
+                    t = (allNumberSymbols * (t - Text[i] * h) + Text[i + patternNums]) % q;
+
+                    // We might get negative value of t,
+                    // converting it to positive
+                    if (t < 0)
+                        t = (t + q);
+                }
+            }
         }
 
         /// <summary>
@@ -395,35 +453,33 @@ namespace AlgorithmKMP
             int patternNums = pattern.Length;
             int textNums = Text.Length;
 
-            int allNumberSymbols = 256;
-
             // Создаем двухмерный массив (столбцы - кол-во символов в образце, строки - все возможные символы)
-            int[][] TF = new int[patternNums + 1][];
+            int[][] setValues = new int[patternNums + 1][];
 
             for (int array1 = 0; array1 < (patternNums + 1); array1++)
-                TF[array1] = new int[allNumberSymbols];
+                setValues[array1] = new int[allNumberSymbols];
 
             // покажет Finite Automata для переданного pattern
             int state, x;
             for (state = 0; state <= patternNums; ++state)
                 for (x = 0; x < allNumberSymbols; ++x)
-                    TF[state][x] = GetNextState(pattern, patternNums, state, x);
+                    setValues[state][x] = GetNextState(pattern, patternNums, state, x);
 
             // Вывод индексов первых символов совпадений 
             int num = 0;
             for (int i = 0; i < textNums; i++)
             {
-                num = TF[num][Text[i]];
+                num = setValues[num][Text[i]];
                 if (num == patternNums)
                     Console.WriteLine("Pattern found at index " + (i - patternNums + 1));
             }
         }
 
-        public int GetNextState(string pattern, int M, int state, int x)
+        public int GetNextState(string pattern, int patternNums, int state, int x)
         {
             // Если текущий символ образца меньше всех его символов и совпал символ(в виде int) с символом из образца
             // то записываем что нашли похоже символ, тобишь записываем правильное значение (+1 к state)
-            if (state < M && (char)x == pattern[state])
+            if (state < patternNums && (char)x == pattern[state])
                 return state + 1;
 
             // ns покажет где следующий будет у нас state
