@@ -82,7 +82,13 @@ NP-completeness/TaskAboutBackpack/bin
 NP-completeness/TaskAboutBackpack/obj
 
 
+# Search by sample:
 
+SearchBySample/.idea
+SearchBySample/.vs
+
+SearchBySample/SearchBySample/bin
+SearchBySample/SearchBySample/obj
 
 
 
