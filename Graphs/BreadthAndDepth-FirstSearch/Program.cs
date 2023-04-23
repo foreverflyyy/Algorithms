@@ -1,4 +1,5 @@
 ﻿using Graphs;
+using System.Text;
 
 namespace BreadthAndDepth_FirstSearch
 {
@@ -8,15 +9,20 @@ namespace BreadthAndDepth_FirstSearch
         static void Main()
         {
             // Берём файл для чтения матрицы
-            var matrixAdjacency = new FileStream("matrixInput3.txt", FileMode.OpenOrCreate);
+            string path = @"D:\dream\Algorithms\Graphs\BreadthAndDepth-FirstSearch\matrixInput7.txt";
+            var fileMatrixIncidence = new FileStream(path, FileMode.OpenOrCreate);
 
-            // Создаём граф, по которому будем выполнять обход
-            var graph = MethodsForSearch<char>.CreateGraph(matrixAdjacency);
-            var methods = new MethodsForSearch<char>(graph);
+            // Переводим матрицу инцидентности в матрицу смежности=
+            MethodsForSearch<char>.ChangeMatrixIncidenceToMatrixAdjacency(fileMatrixIncidence, TypeGraph.WeightedUndirectedGraph);
+            fileMatrixIncidence?.Close();
 
-            matrixAdjacency?.Close();
+            var fileMatrixAdjacency = new FileStream("matrixInput8.txt", FileMode.OpenOrCreate);
+            // Берём файл для чтения матрицы и создаём граф, по которому будем выполнять обход
+            var graph = MethodsForSearch<char>.CreateGraphFromMatrixAdjacency(fileMatrixAdjacency);
+            fileMatrixAdjacency?.Close();
 
             char startNode = 'A';
+            var methods = new MethodsForSearch<char>(graph);
             var dictWays = methods.ShortWaysToNodes(startNode, TypeSearch.BreadthFirstSearch);
 
             Console.WriteLine($"All ways from node - {startNode}");
