@@ -1,30 +1,27 @@
-﻿using System;
-using System.IO;
-
-namespace AlgorithmKMP
+﻿namespace AlgorithmKMP
 {
     class Program
     {
         static void Main(string[] args)
         {
             // Берём файл для чтения матрицы
-            //string path = @"D:\dream\Algorithms\SearchBySample\SearchBySample\data.txt";
-            string path = @"D:\workSpaceNU\primat\Algorithms\SearchBySample\SearchBySample\data.txt";
+            string path = @"D:\dream\Algorithms\SearchBySample\SearchBySample\data2.txt";
+            //string path = @"D:\workSpaceNU\primat\Algorithms\SearchBySample\SearchBySample\data.txt";
             var fileWithText = new StreamReader(path);
             var text = fileWithText.ReadToEnd();
-
-            //Console.WriteLine("Enter word sample: ");
-            //string? sample = fileWithText.ReadLine();
-            string sample = "игла";
-            //string sample = "abcdabcd";
             fileWithText?.Close();
+
+            //string sample = "игла";
+            //string sample = "ERG";
+            string sample = "AABA";
 
             var methods = new MethodsForSearch(text);
 
             //methods.SimpleSearch(sample);
             //methods.AlgorithmKMP(sample);
             //methods.AlgorithmBoyerMoore(sample);
-            methods.AlgorithmRabinCarp(sample);
+            //methods.AlgorithmRabinCarp(sample);
+            methods.FiniteStateMachine(sample);
         }
     }
 }

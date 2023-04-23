@@ -30,7 +30,7 @@ namespace AlgorithmKMP
             {
                 for (int j = 0; ; ++j)
                 {
-                    if (Text[i + j] != sample[j]) 
+                    if (Text[i + j] != sample[j])
                         break;
 
                     if ((j + 1) == sample.Length)
@@ -54,10 +54,10 @@ namespace AlgorithmKMP
             // Массив длин префиксов для образца (\сколько символов в образце)
             var pi = new int[lengthSample];
             // p[0]=0 всегда, p[1]=1, если начинается с двух одинаковых 
-            pi[0] = 0; 
+            pi[0] = 0;
 
             // длина образца
-            int l; 
+            int l;
 
             // Заполняем массив для префиксов
             for (l = 1; l < lengthSample; ++l)
@@ -66,7 +66,7 @@ namespace AlgorithmKMP
 
                 // Если совпадение, то берем ранее рассчитанное значение (начиная с максимально возможных)
                 while ((k > 0) && (sample[l] != sample[k]))
-                    k = pi[k - 1]; 
+                    k = pi[k - 1];
 
                 if (sample[l] == sample[k])
                     ++k;
@@ -101,7 +101,7 @@ namespace AlgorithmKMP
 
                     // Можно не возвращать, а искать дальше совпадения
                     return;
-                } 
+                }
             }
         }
 
@@ -112,7 +112,7 @@ namespace AlgorithmKMP
         {
             int lengthText = Text.Length;
             var pi = new List<int>(lengthText); // в i-м элементе (его индекс i-1) количество совпавших символов в начале и конце для подстроки длины i. 
-                                  // p[0]=0 всегда, p[1]=1, если начинается с двух одинаковых 
+                                                // p[0]=0 всегда, p[1]=1, если начинается с двух одинаковых 
             for (int i = 1; i < lengthText; ++i)
             {
                 // ищем, какой префикс-суффикс можно расширить
@@ -220,10 +220,10 @@ namespace AlgorithmKMP
 
             for (int j = 1, maxZidx = 0, maxZ = 0; j < m; ++j)
             {
-                if (j <= maxZ) 
+                if (j <= maxZ)
                     z[j] = Math.Min(maxZ - j + 1, z[j - maxZidx]);
 
-                while (j + z[j] < m && pattern[m - 1 - z[j]] == pattern[m - 1 - (j + z[j])]) 
+                while (j + z[j] < m && pattern[m - 1 - z[j]] == pattern[m - 1 - (j + z[j])])
                     z[j]++;
 
                 if (j + z[j] - 1 > maxZ)
@@ -234,7 +234,7 @@ namespace AlgorithmKMP
             }
 
             // Первый цикл
-            for (int j = m - 1; j > 0; j--) 
+            for (int j = m - 1; j > 0; j--)
                 suffshift[m - z[j]] = j;
 
             // Второй цикл
@@ -258,7 +258,7 @@ namespace AlgorithmKMP
 
             suffix[pattern.Length] = 1;
 
-            for(int i = pattern.Length - 1; i >= 0; i--)
+            for (int i = pattern.Length - 1; i >= 0; i--)
                 for (int at = i; at < pattern.Length; at++)
                 {
                     string s = pattern.Substring(at);
@@ -383,7 +383,68 @@ namespace AlgorithmKMP
         /// </summary>
         public void AlgorithmRabinCarp(string pattern)
         {
-            
+
+        }
+
+        /// <summary>
+        /// Реализация поиска по образцу с помощью конечного автомата
+        /// </summary>
+        public void FiniteStateMachine(string pattern)
+        {
+            /* Prints all occurrences of pat in txt */
+            int patternNums = pattern.Length;
+            int textNums = Text.Length;
+
+            int allNumberSymbols = 256;
+
+            // Создаем двухмерный массив (столбцы - кол-во символов в образце, строки - все возможные символы)
+            int[][] TF = new int[patternNums + 1][];
+
+            for (int array1 = 0; array1 < (patternNums + 1); array1++)
+                TF[array1] = new int[allNumberSymbols];
+
+            // покажет Finite Automata для переданного pattern
+            int state, x;
+            for (state = 0; state <= patternNums; ++state)
+                for (x = 0; x < allNumberSymbols; ++x)
+                    TF[state][x] = GetNextState(pattern, patternNums, state, x);
+
+            // Вывод индексов первых символов совпадений 
+            int num = 0;
+            for (int i = 0; i < textNums; i++)
+            {
+                num = TF[num][Text[i]];
+                if (num == patternNums)
+                    Console.WriteLine("Pattern found at index " + (i - patternNums + 1));
+            }
+        }
+
+        public int GetNextState(string pattern, int M, int state, int x)
+        {
+            // Если текущий символ образца меньше всех его символов и совпал символ(в виде int) с символом из образца
+            // то записываем что нашли похоже символ, тобишь записываем правильное значение (+1 к state)
+            if (state < M && (char)x == pattern[state])
+                return state + 1;
+
+            // ns покажет где следующий будет у нас state
+            // начинаем с самого большого возможного значения и заканчиваем когда префикс является также и суффиксом
+            for (int ns = state; ns > 0; ns--)
+            {
+                int i;
+                // условие, что предыдущий наш символ совпадает с текущим x
+                if (pattern[ns - 1] == (char)x)
+                {
+                    // через циксл смотрим чтоб рядом не повторялись элементы
+                    for (i = 0; i < ns - 1; i++)
+                        if (pattern[i] != pattern[state - ns + 1 + i])
+                            break;
+
+                    if (i == ns - 1)
+                        return ns;
+                }
+            }
+
+            return 0;
         }
     }
 }
