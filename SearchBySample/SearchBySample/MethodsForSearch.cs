@@ -1,10 +1,4 @@
-﻿using System.IO;
-using System.Net;
-using System.Net.NetworkInformation;
-using System.Numerics;
-using static System.Net.Mime.MediaTypeNames;
-
-namespace AlgorithmKMP
+﻿namespace AlgorithmKMP
 {
     /// <summary>
     /// Класс с методами для чтения данных и поиска по образцу
@@ -24,7 +18,6 @@ namespace AlgorithmKMP
         /// <summary>
         /// Простой поиск образца в строке «методом грубой силы»
         /// </summary>
-        /// <param name="sample"> Передаваемая строка образец </param>
         public void SimpleSearch(string pattern)
         {
             // i-с какого места строки  ищем
