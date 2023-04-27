@@ -29,7 +29,7 @@ namespace NpTasks
             thingsWithValues.Add(new Thing { Name = "Laptop", Price = 2000, Weight = 2});
             thingsWithValues.Add(new Thing { Name = "Recorder", Price = 3000, Weight = 4});
             thingsWithValues.Add(new Thing { Name = "Guitar", Price = 1500, Weight = 1});
-            //thingsWithValues.Add(new Thing { Name = "Phone", Price = 1000, Weight = 1});
+            thingsWithValues.Add(new Thing { Name = "Phone", Price = 1000, Weight = 1});
 
             MethodsForDecisions.TaskAboutBackpack(thingsWithValues, maxWeight: 4);
         }
