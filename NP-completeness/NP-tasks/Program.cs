@@ -15,7 +15,7 @@ namespace NpTasks
 
 
             // Задача о распределении в ящики
-            TaskLayoutByBoxes();
+            //TaskLayoutByBoxes();
 
 
             // Задача о сумме подмножеств
@@ -59,23 +59,23 @@ namespace NpTasks
             var listBoxes = new List<Box>();
             var listElements = new List<Element>();
 
-            listBoxes.Add(new Box { Name = "firstBox", FreePlace = 1});
-            listBoxes.Add(new Box { Name = "secondBox", FreePlace = 1});
-            listBoxes.Add(new Box { Name = "thirdBox", FreePlace = 1});
-            listBoxes.Add(new Box { Name = "fouthBox", FreePlace = 1});
-            listBoxes.Add(new Box { Name = "fifthBox", FreePlace = 1});
-            listBoxes.Add(new Box { Name = "sixthBox", FreePlace = 1});
+            listBoxes.Add(new Box { Name = "1stBox", FreePlace = 1});
+            listBoxes.Add(new Box { Name = "2ndBox", FreePlace = 1});
+            listBoxes.Add(new Box { Name = "3rdBox", FreePlace = 1});
+            listBoxes.Add(new Box { Name = "4thBox", FreePlace = 1});
+            listBoxes.Add(new Box { Name = "5thBox", FreePlace = 1});
+            listBoxes.Add(new Box { Name = "6thBox", FreePlace = 1});
 
-            listElements.Add(new Element { Name = "firstElement", Size = 0.5 });
-            listElements.Add(new Element { Name = "secondElement", Size = 0.7 });
-            listElements.Add(new Element { Name = "thirdElement", Size = 0.3 });
-            listElements.Add(new Element { Name = "fourthElement", Size = 0.9 });
-            listElements.Add(new Element { Name = "fifthElement", Size = 0.6 });
-            listElements.Add(new Element { Name = "sixthElement", Size = 0.8 });
-            listElements.Add(new Element { Name = "seventhElement", Size = 0.1 });
-            listElements.Add(new Element { Name = "eighthElement", Size = 0.4 });
-            listElements.Add(new Element { Name = "ninethElement", Size = 0.2 });
-            listElements.Add(new Element { Name = "tenthElement", Size = 0.5 });
+            listElements.Add(new Element { Name = "1stEl", Size = 0.5 });
+            listElements.Add(new Element { Name = "2ndEl", Size = 0.7 });
+            listElements.Add(new Element { Name = "3rdEl", Size = 0.3 });
+            listElements.Add(new Element { Name = "4thEl", Size = 0.9 });
+            listElements.Add(new Element { Name = "5thEl", Size = 0.6 });
+            listElements.Add(new Element { Name = "6thEl", Size = 0.8 });
+            listElements.Add(new Element { Name = "7thEl", Size = 0.1 });
+            listElements.Add(new Element { Name = "8thEl", Size = 0.4 });
+            listElements.Add(new Element { Name = "9thEl", Size = 0.2 });
+            listElements.Add(new Element { Name = "10thEl", Size = 0.1 });
 
             MethodsForDecisions.TaskLayoutByBoxes(listBoxes, listElements);
         }
@@ -109,6 +109,7 @@ namespace NpTasks
     {
         public string Name { get; set; }
         public double FreePlace { get; set; }
+        public List<Element> ListElements { get; set; } = new List<Element>();
     }
     
     public class Element

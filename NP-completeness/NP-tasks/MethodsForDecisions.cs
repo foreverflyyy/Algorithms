@@ -85,9 +85,9 @@ namespace NpTasks
             foreach (var node in graph)
                 Console.WriteLine($"{node.Name} - {node.Color}");
         }
-        
+
         /// <summary>
-        /// Решение задачи о раскладке по ящикам
+        /// Решение задачи о раскладке по ящикам (жадный алгоритм)
         /// </summary>
         public static void TaskLayoutByBoxes(List<Box> listBoxes, List<Element> listElements)
         {
@@ -97,14 +97,45 @@ namespace NpTasks
             // Алгоритм помещает всякий предмет таким образом, чтобы после его укладки в ящике оставалось как можно меньше места
             // Укладка в новый ящик происходит только в том случае, если очередной объект не помещается ни в какой из имеющихся ящиков
 
+            var listBoxesWithElem = new List<Box>();
+
             for(int i = 0; i < amountElements; i++)
             {
+                Box checkingBox = listBoxesWithElem.FirstOrDefault(x => (x.FreePlace - listElements[i].Size) > 0);
 
+                // Если у нас нет свободного ящика под текущий элемент, то берём новый
+                if(checkingBox == null)
+                {
+                    checkingBox = listBoxes.FirstOrDefault(x => (x.FreePlace - listElements[i].Size) > 0);
+
+                    // Если и нового нет, то лови исключение
+                    if (checkingBox == null)
+                        throw new Exception($"For element {listElements[i].Name} did't find the suitable box!");
+
+                    checkingBox.FreePlace -= listElements[i].Size;
+                    checkingBox.ListElements.Add(listElements[i]);
+                    listBoxesWithElem.Add(checkingBox);
+
+                    continue;
+                }
+
+                // Если в ящике уже с элементами есть ещё место под элемент
+                checkingBox.FreePlace -= listElements[i].Size;
+                checkingBox.ListElements.Add(listElements[i]);
             }
+
+            Console.WriteLine("List boxes with elements: ");
+
+            foreach(Box box in listBoxesWithElem)
+            {
+                Console.Write($"\nBox: {box.Name}, including elements: ");
+                foreach(Element element in box.ListElements)
+                    Console.Write($"{element.Name}, ");
+            } 
         }
 
         /// <summary>
-        /// Решение задачи о суммах подмножеств, используя жадный алгоритм
+        /// Решение задачи о суммах подмножеств (жадный алгоритм)
         /// </summary>
         public static void isSubsetSum(HashSet<string> allComponents, Dictionary<string, HashSet<string>> tableSubsetsStations)
         {
