@@ -1,4 +1,4 @@
-﻿
+﻿using Graphs;
 
 namespace NpTasks
 {
@@ -7,11 +7,11 @@ namespace NpTasks
         static void Main(string[] args)
         {
             // Задача о рюкзаке
-            TaskAboutBackpack();
+            //TaskAboutBackpack();
 
 
             // Задача о раскраске графа
-            //TaskAboutColoringGraph();
+            TaskAboutColoringGraph();
 
 
             // Задача о распределении в ящики
@@ -36,7 +36,22 @@ namespace NpTasks
 
         public static void TaskAboutColoringGraph()
         {
-            MethodsForDecisions.TaskAboutColoringGraph();
+            // Берём файл для чтения матрицы
+            //string path = @"D:\dream\Algorithms\Graphs\EulerianPath\matrixInput1.txt";
+            string path = @"D:\workSpaceNU\primat\Algorithms\NP-completeness\NP-tasks\matrixInput.txt";
+            var matrixAdjacency = new FileStream(path, FileMode.OpenOrCreate);
+
+            // Создаём граф, по которому будем выполнять обход
+            var graph = GraphRealization<char>.CreateGraph(matrixAdjacency);
+
+            var colors = new List<string>
+            {
+                "BLUE", "GREEN", "RED", "YELLOW", "ORANGE", "PINK",
+                "BLACK", "BROWN", "WHITE", "PURPLE", "VOILET"
+            };
+
+            // Никакие две соседние вершины не должны иметь одинаковый цвет
+            MethodsForDecisions.TaskAboutColoringGraph(graph, colors);
         }
 
         public static void TaskLayoutByBoxes()

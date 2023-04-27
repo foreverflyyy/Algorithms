@@ -1,4 +1,6 @@
-﻿namespace NpTasks
+﻿using Graphs;
+
+namespace NpTasks
 {
     /// <summary>
     /// Класс с методами для решения NP-задач
@@ -46,11 +48,42 @@
         }
         
         /// <summary>
-        /// Решение задачи о раскраске графа
+        /// Решение задачи о раскраске графа (жадный алгоритм)
         /// </summary>
-        public static void TaskAboutColoringGraph()
+        public static void TaskAboutColoringGraph(List<GraphInfo> graph, List<string> colors)
         {
-            
+            // Количество вершин
+            int amountVertex = graph.Count;
+
+            for(int i = 0; i < amountVertex; i++)
+            {
+                // устанавливаем для хранения цвета смежных вершин `u`
+                var resolvedColors = new List<string>();
+
+                // проверяем цвета смежных вершин `u` и сохраняем их в наборе
+                foreach (var node in graph[i].ConnectedNodes)
+                    if(node.Color != null)
+                        resolvedColors.Add(node.Color);
+
+                // проверяем первый свободный цвет
+                string freeColor = "";
+
+                for (int j = 0; j < colors.Count; j++)
+                    if (!resolvedColors.Contains(colors[j]))
+                    {
+                        freeColor = colors[j];
+                        break;
+                    }
+                        
+
+                // назначаем вершине i первый доступный цвет
+                graph[i].Color = freeColor;
+            }
+
+            Console.WriteLine("The colors of vertexes: ");
+
+            foreach (var node in graph)
+                Console.WriteLine($"{node.Name} - {node.Color}");
         }
         
         /// <summary>
