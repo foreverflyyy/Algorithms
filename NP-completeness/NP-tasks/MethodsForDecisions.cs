@@ -89,11 +89,20 @@ namespace NpTasks
         /// <summary>
         /// Решение задачи о раскладке по ящикам
         /// </summary>
-        public static void TaskLayoutByBoxes()
+        public static void TaskLayoutByBoxes(List<Box> listBoxes, List<Element> listElements)
         {
-            
+            var amountBoxes = listBoxes.Count;
+            var amountElements = listElements.Count;
+
+            // Алгоритм помещает всякий предмет таким образом, чтобы после его укладки в ящике оставалось как можно меньше места
+            // Укладка в новый ящик происходит только в том случае, если очередной объект не помещается ни в какой из имеющихся ящиков
+
+            for(int i = 0; i < amountElements; i++)
+            {
+
+            }
         }
-        
+
         /// <summary>
         /// Решение задачи о суммах подмножеств, используя жадный алгоритм
         /// </summary>

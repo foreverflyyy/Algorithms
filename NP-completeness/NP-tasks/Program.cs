@@ -11,11 +11,11 @@ namespace NpTasks
 
 
             // Задача о раскраске графа
-            TaskAboutColoringGraph();
+            //TaskAboutColoringGraph();
 
 
             // Задача о распределении в ящики
-            //TaskLayoutByBoxes();
+            TaskLayoutByBoxes();
 
 
             // Задача о сумме подмножеств
@@ -56,7 +56,28 @@ namespace NpTasks
 
         public static void TaskLayoutByBoxes()
         {
-            MethodsForDecisions.TaskLayoutByBoxes();
+            var listBoxes = new List<Box>();
+            var listElements = new List<Element>();
+
+            listBoxes.Add(new Box { Name = "firstBox", FreePlace = 1});
+            listBoxes.Add(new Box { Name = "secondBox", FreePlace = 1});
+            listBoxes.Add(new Box { Name = "thirdBox", FreePlace = 1});
+            listBoxes.Add(new Box { Name = "fouthBox", FreePlace = 1});
+            listBoxes.Add(new Box { Name = "fifthBox", FreePlace = 1});
+            listBoxes.Add(new Box { Name = "sixthBox", FreePlace = 1});
+
+            listElements.Add(new Element { Name = "firstElement", Size = 0.5 });
+            listElements.Add(new Element { Name = "secondElement", Size = 0.7 });
+            listElements.Add(new Element { Name = "thirdElement", Size = 0.3 });
+            listElements.Add(new Element { Name = "fourthElement", Size = 0.9 });
+            listElements.Add(new Element { Name = "fifthElement", Size = 0.6 });
+            listElements.Add(new Element { Name = "sixthElement", Size = 0.8 });
+            listElements.Add(new Element { Name = "seventhElement", Size = 0.1 });
+            listElements.Add(new Element { Name = "eighthElement", Size = 0.4 });
+            listElements.Add(new Element { Name = "ninethElement", Size = 0.2 });
+            listElements.Add(new Element { Name = "tenthElement", Size = 0.5 });
+
+            MethodsForDecisions.TaskLayoutByBoxes(listBoxes, listElements);
         }
         
         public static void isSubsetSum()
@@ -82,6 +103,18 @@ namespace NpTasks
         public string Name { get; set; }
         public int Price { get; set; }
         public int Weight { get; set; }
+    }
+
+    public class Box
+    {
+        public string Name { get; set; }
+        public double FreePlace { get; set; }
+    }
+    
+    public class Element
+    {
+        public string Name { get; set; }
+        public double Size { get; set; }
     }
 }
 /*
