@@ -24,15 +24,14 @@ namespace NpTasks
 
         public static void TaskAboutBackpack()
         {
-            var thingsWithValues = new Dictionary<string, HashSet<string>>();
+            var thingsWithValues = new List<Thing>();
 
-            thingsWithValues.Add("kone", new HashSet<string> { "id", "nv", "ut" });
-            thingsWithValues.Add("ktwo", new HashSet<string> { "wa", "id", "mt" });
-            thingsWithValues.Add("kthree", new HashSet<string> { "or", "nv", "ca" });
-            thingsWithValues.Add("kfour", new HashSet<string> { "nv", "ut" });
-            thingsWithValues.Add("kfive", new HashSet<string> { "ca", "az" });
+            thingsWithValues.Add(new Thing { Name = "Laptop", Price = 2000, Weight = 2});
+            thingsWithValues.Add(new Thing { Name = "Recorder", Price = 3000, Weight = 4});
+            thingsWithValues.Add(new Thing { Name = "Guitar", Price = 1500, Weight = 1});
+            //thingsWithValues.Add(new Thing { Name = "Phone", Price = 1000, Weight = 1});
 
-            MethodsForDecisions.TaskAboutBackpack();
+            MethodsForDecisions.TaskAboutBackpack(thingsWithValues, maxWeight: 4);
         }
 
         public static void TaskAboutColoringGraph()
@@ -68,6 +67,7 @@ namespace NpTasks
         public string Name { get; set; }
         public int Price { get; set; }
         public int Weight { get; set; }
+    }
 }
 /*
   NP - полные задачи

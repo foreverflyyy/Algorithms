@@ -12,7 +12,46 @@
         /// <param name="maxWeight"> Вместимость рюкзака </param>
         public static void TaskAboutBackpack(List<Thing> thingsWithValues, int maxWeight)
         {
-            
+            int checkingThings = 0; // Количество обработанных предметов
+
+            // Максимальная суммарная стоимость, которую можно набрать
+            // первыми i (строки вещей) предметами так, чтобы их вес не превосходил j (столбцы весов)
+            int[,] maxAmountCost = new int[thingsWithValues.Count, maxWeight];
+
+            for (int i = 0; i < thingsWithValues.Count; i++)
+            {
+                for (int j = 1; j <= maxWeight; j++)
+                {
+                    // Если вес совпал с текущим элементом, то 3 варианта
+                    if (thingsWithValues[i].Weight == j)
+                    {
+                        // Если мы находимся в первой ячейке таблицы
+                        if (j == 1 && i == 0)
+                            maxAmountCost[i, j - 1] = thingsWithValues[i].Price;
+
+                        // Если мы 
+                        if (j == 1)
+                        {
+
+                        }
+                        // 
+                    }
+
+                    // Проверка если вес текущего элемента подходим под вес столбца
+                    if (thingsWithValues[i].Weight > j)
+                    {
+                        maxAmountCost[i, j - 1] = thingsWithValues[i].Price;
+                    }
+
+
+
+                    // Проверка если вес текущего элемента подходим под вес столбца
+                    if (thingsWithValues[i].Weight >= j)
+                        maxAmountCost[i, j - 1] = thingsWithValues[i].Price;
+
+                    maxAmountCost[i, j - 1] = 0;
+                }
+            }
         }
         
         /// <summary>
