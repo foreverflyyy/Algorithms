@@ -12,8 +12,6 @@
         /// <param name="maxWeight"> Вместимость рюкзака </param>
         public static void TaskAboutBackpack(List<Thing> thingsWithValues, int maxWeight)
         {
-            int checkingThings = 0; // Количество обработанных предметов
-
             // Максимальная суммарная стоимость, которую можно набрать
             // первыми i (строки вещей) предметами так, чтобы их вес не превосходил j (столбцы весов)
             int[,] maxAmountCost = new int[thingsWithValues.Count, maxWeight];
@@ -22,34 +20,73 @@
             {
                 for (int j = 1; j <= maxWeight; j++)
                 {
-                    // Если вес совпал с текущим элементом, то 3 варианта
-                    if (thingsWithValues[i].Weight == j)
+                    // Если мы находимся в первой ячейке таблицы
+                    if (j == 1 && i == 0)
                     {
-                        // Если мы находимся в первой ячейке таблицы
-                        if (j == 1 && i == 0)
+                        // Если вес подходит то присваиваем, если нет то 0
+                        if(thingsWithValues[i].Weight <= j)
                             maxAmountCost[i, j - 1] = thingsWithValues[i].Price;
+                        else
+                            maxAmountCost[i, j - 1] = 0;
 
-                        // Если мы 
+                        continue;
+                    }
+
+                    // Если текущий элемент не подходит по весу
+                    if (thingsWithValues[i].Weight < j)
+                    {
+                        // То ищем элемент с соседнего столбца или строки
+                        if (i == 0)
+                        {
+                            if (maxAmountCost[i, j - 2] > thingsWithValues[i].Price)
+                                maxAmountCost[i, j - 1] = maxAmountCost[i, j - 2];
+                            else
+                                maxAmountCost[i, j - 1] = thingsWithValues[i].Price;
+
+                            continue;
+                        }
+
+                        // Если мы на первом стобце, то либо закинуть текущую вещь или если дороже, то перенести другую вещь с верхней строки
                         if (j == 1)
                         {
+                            if (maxAmountCost[i - 1, j - 1] > thingsWithValues[i].Price)
+                                maxAmountCost[i, j - 1] = maxAmountCost[i - 1, j - 1];
+                            else
+                                maxAmountCost[i, j - 1] = thingsWithValues[i].Price;
 
+                            continue;
                         }
-                        // 
-                    }
 
-                    // Проверка если вес текущего элемента подходим под вес столбца
-                    if (thingsWithValues[i].Weight > j)
-                    {
                         maxAmountCost[i, j - 1] = thingsWithValues[i].Price;
+
+                        maxAmountCost[i, j - 1] = 0;
                     }
 
-
-
-                    // Проверка если вес текущего элемента подходим под вес столбца
+                    // Если у нас подходит по весу и возможно есть свободное место
                     if (thingsWithValues[i].Weight >= j)
-                        maxAmountCost[i, j - 1] = thingsWithValues[i].Price;
+                    {
+                        // Если мы на первой строке, то либо закинуть текущую вещь или если дороже, то закинуть вещь с левой ячейки строки
+                        if (i == 0)
+                        {
+                            if (maxAmountCost[i, j - 2] > thingsWithValues[i].Price)
+                                maxAmountCost[i, j - 1] = maxAmountCost[i, j - 2];
+                            else
+                                maxAmountCost[i, j - 1] = thingsWithValues[i].Price;
 
-                    maxAmountCost[i, j - 1] = 0;
+                            continue;
+                        }
+
+                        // Если мы на первом стобце, то либо закинуть текущую вещь или если дороже, то перенести другую вещь с верхней строки
+                        if (j == 1)
+                        {
+                            if (maxAmountCost[i - 1, j - 1] > thingsWithValues[i].Price)
+                                maxAmountCost[i, j - 1] = maxAmountCost[i - 1, j - 1];
+                            else
+                                maxAmountCost[i, j - 1] = thingsWithValues[i].Price;
+
+                            continue;
+                        }
+                    }
                 }
             }
         }
