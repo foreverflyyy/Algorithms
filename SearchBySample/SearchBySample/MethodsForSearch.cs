@@ -45,14 +45,12 @@
             int M = pattern.Length;
             int N = Text.Length;
 
-            // create lps[] that will hold the longest prefix suffix values for pattern
             int[] lps = new int[M];
-            int j = 0; // index for pat[]
+            int j = 0;
 
-            // Preprocess the pattern (calculate lps[] array)
             ComputeLPSArray(pattern, M, lps);
 
-            int i = 0; // index for txt[]
+            int i = 0;
             while ((N - i) >= (M - j))
             {
                 if (pattern[j] == Text[i])
@@ -67,10 +65,8 @@
                     j = lps[j - 1];
                 }
 
-                // mismatch after j matches
                 else if (i < N && pattern[j] != Text[i])
                 {
-                    // Do not match lps[0..lps[j-1]] characters, they will match anyway
                     if (j != 0)
                         j = lps[j - 1];
                     else
@@ -81,12 +77,10 @@
 
         public void ComputeLPSArray(string pat, int M, int[] lps)
         {
-            // length of the previous longest prefix suffix
             int len = 0;
             int i = 1;
-            lps[0] = 0; // lps[0] is always 0
+            lps[0] = 0;
 
-            // the loop calculates lps[i] for i = 1 to M-1
             while (i < M)
             {
                 if (pat[i] == pat[len])
@@ -95,16 +89,13 @@
                     lps[i] = len;
                     i++;
                 }
-                else // (pat[i] != pat[len])
+                else
                 {
-                    // This is tricky. Consider the example. AAACAAAA and i = 7. The idea is similar to search step.
                     if (len != 0)
                     {
                         len = lps[len - 1];
-
-                        // Also, note that we do not increment i here
                     }
-                    else // if (len == 0)
+                    else
                     {
                         lps[i] = len;
                         i++;
@@ -118,41 +109,30 @@
         /// </summary>
         public void AlgorithmBoyerMoore(string pattern)
         {
-            /* A pattern searching function that uses Bad Character Heuristic of Boyer Moore Algorithm */
-
             int m = pattern.Length;
             int n = Text.Length;
 
             int[] badchar = new int[allNumberSymbols];
 
-            /* Fill the bad character array by calling the preprocessing function badCharHeuristic() for given pattern */
             BadCharHeuristic(pattern, m, badchar);
 
-            // s is shift of the pattern with respect to text
             int s = 0; 
             
             while (s <= (n - m))
             {
                 int j = m - 1;
 
-                /* Keep reducing index j of pattern while characters of pattern and text are matching at this shift s */
                 while (j >= 0 && pattern[j] == Text[s + j])
                     j--;
 
-                /* If the pattern is present at current shift, then index j will become -1 after the above loop */
                 if (j < 0)
                 {
                     Console.WriteLine("Patterns occur at shift = " + s);
 
-                    /* Shift the pattern so that the next character in text aligns with the last occurrence of it in pattern.
-                    The condition s+m < n is necessary for the case when pattern occurs at the end of text */
                     s += (s + m < n) ? m - badchar[Text[s + m]] : 1;
                 }
 
                 else
-                    /* Shift the pattern so that the bad character in text aligns with the last occurrence of it in pattern. The max function is used to
-                    make sure that we get a positive shift. We may get a negative shift if the last occurrence of bad character in pattern
-                    is on the right side of the current character. */
                     s += Max(1, j - badchar[Text[s + j]]);
             }
         }
@@ -163,12 +143,9 @@
         {
             int i;
 
-            // Initialize all occurrences as -1
             for (i = 0; i < allNumberSymbols; i++)
                 badchar[i] = -1;
 
-            // Fill the actual value of last occurrence
-            // of a character
             for (i = 0; i < size; i++)
                 badchar[(int)str[i]] = i;
         }
@@ -186,50 +163,39 @@
 
             int i, j;
 
-            int p = 0; // hash value for pattern
-            int t = 0; // hash value for txt
+            int p = 0;
+            int t = 0;
 
             int h = 1;
 
-            // The value of h would be "pow(d, M-1)%q"
             for (i = 0; i < patternNums - 1; i++)
                 h = (h * allNumberSymbols) % q;
 
-            // Calculate the hash value of pattern and first window of text
             for (i = 0; i < patternNums; i++)
             {
                 p = (allNumberSymbols * p + pattern[i]) % q;
                 t = (allNumberSymbols * t + Text[i]) % q;
             }
 
-            // Slide the pattern over text one by one
             for (i = 0; i <= textNums - patternNums; i++)
             {
-                // Check the hash values of current window of text and pattern. If the hash
-                // values match then only check for characters one by one
                 if (p == t)
                 {
-                    /* Check for characters one by one */
                     for (j = 0; j < patternNums; j++)
                     {
                         if (Text[i + j] != pattern[j])
                             break;
                     }
 
-                    // if p == t and pat[0...M-1] = txt[i, i+1, ...i+M-1]
                     if (j == patternNums)
                         Console.WriteLine(
                             "Pattern found at index " + i);
                 }
 
-                // Calculate hash value for next window of text:
-                // Remove leading digit, add trailing digit
                 if (i < textNums - patternNums)
                 {
                     t = (allNumberSymbols * (t - Text[i] * h) + Text[i + patternNums]) % q;
 
-                    // We might get negative value of t,
-                    // converting it to positive
                     if (t < 0)
                         t = (t + q);
                 }
@@ -241,7 +207,6 @@
         /// </summary>
         public void FiniteStateMachine(string pattern)
         {
-            /* Prints all occurrences of pat in txt */
             int patternNums = pattern.Length;
             int textNums = Text.Length;
 
