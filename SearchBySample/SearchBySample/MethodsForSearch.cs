@@ -173,48 +173,51 @@
         /// </summary>
         public void AlgorithmBoyerMoore(string pattern)
         {
-            int m = pattern.Length;
-            int n = Text.Length;
+            int patternLength = pattern.Length;
+            int textLength = Text.Length;
 
-            int[] badchar = new int[allNumberSymbols];
+            // Перевод символов образца в числа
+            var numberChars = ArrayCharsToInt(pattern);
 
-            BadCharHeuristic(pattern, m, badchar);
-
-            int s = 0; 
+            int index = 0; 
             
-            while (s <= (n - m))
+            // Пока не дошли до индекса текста, где не может быть подстроки
+            while (index <= (textLength - patternLength))
             {
-                int j = m - 1;
+                int j = patternLength - 1;
 
-                while (j >= 0 && pattern[j] == Text[s + j])
+                // Ищем как бы с суффикса, идём с задней части 
+                while (j >= 0 && pattern[j] == Text[index + j])
                     j--;
 
+                // Значит нашли совпадение
                 if (j < 0)
                 {
-                    Console.WriteLine("Patterns occur at shift = " + s);
+                    Console.WriteLine("Patterns occur at shift = " + index);
 
-                    s += (s + m < n) ? m - badchar[Text[s + m]] : 1;
+                    if (index + patternLength < textLength)
+                        index += patternLength - numberChars[Text[index + patternLength]];
+                    else
+                        index ++;
                 }
 
                 else
-                    s += Max(1, j - badchar[Text[s + j]]);
+                    index += Math.Max(1, j - numberChars[Text[index + j]]);
             }
         }
 
-        private int Max(int a, int b) 
-        { 
-            return (a > b) ? a : b; 
-        }
-
-        private void BadCharHeuristic(string str, int size, int[] badchar)
+        private int[] ArrayCharsToInt(string pattern)
         {
-            int i;
+            int patternLength = pattern.Length;
+            int[] numberChars = new int[allNumberSymbols];
 
-            for (i = 0; i < allNumberSymbols; i++)
-                badchar[i] = -1;
+            for (int i = 0; i < allNumberSymbols; i++)
+                numberChars[i] = -1;
 
-            for (i = 0; i < size; i++)
-                badchar[(int)str[i]] = i;
+            for (int i = 0; i < patternLength; i++)
+                numberChars[(int)pattern[i]] = i;
+
+            return numberChars;
         }
 
         /// <summary>

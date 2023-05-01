@@ -16,15 +16,13 @@
             string sample = "AABA";
 
             //methods.FiniteStateMachine(sample);
-            methods.AlgorithmKMP(sample);
-            //methods.AlgorithmBoyerMoore(sample);
+            //methods.AlgorithmKMP(sample);
+            methods.AlgorithmBoyerMoore(sample);
             //methods.AlgorithmRabinCarp(sample);
         }
     }
 }
-// Исходная строка считывается из некоторого файла. Строка поиска вводится с клавиатуры.
 
-// аaabbaabaabaabbaaabaabaabaabaabbaabb
 /*
     Реализовать алгоритм поиска по образцу с помощью конечного автомата
     Реализовать алгоритм Кнута-Морриса-Пратта для поиска по образцу
