@@ -17,8 +17,8 @@
 
             //methods.FiniteStateMachine(sample);
             //methods.AlgorithmKMP(sample);
-            methods.AlgorithmBoyerMoore(sample);
-            //methods.AlgorithmRabinCarp(sample);
+            //methods.AlgorithmBoyerMoore(sample);
+            methods.AlgorithmRabinCarp(sample);
         }
     }
 }

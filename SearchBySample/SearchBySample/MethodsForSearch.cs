@@ -8,6 +8,7 @@
         public string Text;
 
         // Для перевода(кодировки ASIIC) char в int и наоборот
+        // (если использовать русские буквы, то уведичить число до +-1200)
         private readonly int allNumberSymbols = 256;
 
         public MethodsForSearch(string text)
@@ -200,7 +201,7 @@
                     else
                         index ++;
                 }
-
+                // Большее между 
                 else
                     index += Math.Max(1, j - numberChars[Text[index + j]]);
             }
@@ -226,48 +227,52 @@
         public void AlgorithmRabinCarp(string pattern)
         {
             // Главный номер
-            int q = 101;
+            int ratio = 101;
 
-            int patternNums = pattern.Length;
-            int textNums = Text.Length;
+            int patternLength = pattern.Length;
+            int textLength = Text.Length;
 
-            int i, j;
-
-            int p = 0;
-            int t = 0;
+            int hashPattern = 0;
+            int hashText = 0;
 
             int h = 1;
 
-            for (i = 0; i < patternNums - 1; i++)
-                h = (h * allNumberSymbols) % q;
+            for (int i = 0; i < patternLength - 1; i++)
+                h = (h * allNumberSymbols) % ratio;
 
-            for (i = 0; i < patternNums; i++)
+            for (int i = 0; i < patternLength; i++)
             {
-                p = (allNumberSymbols * p + pattern[i]) % q;
-                t = (allNumberSymbols * t + Text[i]) % q;
+                hashPattern = (allNumberSymbols * hashPattern + pattern[i]) % ratio;    // Хэшируем подстроку (шиблон) в число (которое потом будем сравнивать)
+                hashText = (allNumberSymbols * hashText + Text[i]) % ratio;             // Хэшируем первые символы из текста для дальнейшего сравнения
             }
 
-            for (i = 0; i <= textNums - patternNums; i++)
+            // Идём до индекса текста, когда уже не будет подстроки
+            for (int i = 0; i <= textLength - patternLength; i++)
             {
-                if (p == t)
+                // Если символы совпадают 
+                if (hashPattern == hashText)
                 {
-                    for (j = 0; j < patternNums; j++)
-                    {
+                    int j = 0;
+
+                    // Идём по циклу, пока не найдём разницу в символах
+                    for (j = 0; j < patternLength; j++)
                         if (Text[i + j] != pattern[j])
                             break;
-                    }
 
-                    if (j == patternNums)
-                        Console.WriteLine(
-                            "Pattern found at index " + i);
+                    // Если все символы совпали
+                    if (j == patternLength)
+                        Console.WriteLine("Pattern found at index " + i);
                 }
 
-                if (i < textNums - patternNums)
+                // Если символы не совпали
+                if (i < textLength - patternLength)
                 {
-                    t = (allNumberSymbols * (t - Text[i] * h) + Text[i + patternNums]) % q;
-
-                    if (t < 0)
-                        t = (t + q);
+                    // Вычисление следующего хэш-значения
+                    hashText = (allNumberSymbols * (hashText - Text[i] * h) + Text[i + patternLength]) % ratio;
+                    
+                    // Преобразование в положительное число
+                    if (hashText < 0)
+                        hashText = (hashText + ratio);
                 }
             }
         }
