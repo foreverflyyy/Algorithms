@@ -6,14 +6,15 @@ namespace ShortestPaths {
     {
         static void Main(string[] args)
         {
-            string path = @"D:\dream\Algorithms\Graphs\ShortestPaths\matrixInput1.txt";
+            string path = @"D:\dream\Algorithms\Graphs\ShortestPaths\matrixInput2.txt";
             //string path = @"D:\workSpaceNU\primat\Algorithms\Graphs\ShortestPaths\matrixInput1.txt";
             var matrixAdjacency = new FileStream(path, FileMode.OpenOrCreate);
 
-            var methods = new MethodsShortestPaths(matrixAdjacency, TypeConvertFromFile.ToDictionary);
+            var methods = new MethodsShortestPaths(matrixAdjacency, TypeConvertFromFile.ToArray);
 
             //methods.DijkstraAlgorithm("A", "D");
             //methods.BellmanFordAlgorithm("A");
+            methods.FloydWarshallAlgorithm("A", "D");
         }
     }
 }

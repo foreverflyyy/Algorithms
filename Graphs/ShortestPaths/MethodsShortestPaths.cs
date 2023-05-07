@@ -5,14 +5,16 @@ namespace Graphs
 {
     public class MethodsShortestPaths
     {
+        private double[,] MatrixAdjacencyGraph;
+
         private Dictionary<string, Dictionary<string, double>> DictionaryGraph;             // Хэш-таблица с узлами и их ребрами с весами
         private Dictionary<string, double> Costs = new Dictionary<string, double>();        // Хэш-таблица со стоимостью всех узлов
         private Dictionary<string, string> Parents = new Dictionary<string, string>();      // Хэш-таблица с родителями узлов (1 - узел, 2 - его родитель)
 
         private List<string> checkedNodes = new List<string>(); // Список проверенных узлов
 
-        private double[,] MatrixAdjacencyGraph;
-        private const double Infinity = Double.PositiveInfinity;
+        private const double INFINITY = Double.PositiveInfinity;
+        private const string ALL_SYMBOLS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
         public MethodsShortestPaths(FileStream matrixAdjacency, TypeConvertFromFile type)
         {
@@ -36,14 +38,14 @@ namespace Graphs
                 var valuesLine = rowsMatrix[i].Split(new char[] { ' ' });
 
                 // Создаём новый узел и добавляем в него связанные узлы
-                DictionaryGraph.Add(GetNeedSymbol(i), new Dictionary<string, double>() { });
+                DictionaryGraph.Add(ALL_SYMBOLS[i].ToString(), new Dictionary<string, double>() { });
 
                 for (int j = 0; j < valuesLine.Length; j++)
                 {
                     if (valuesLine[j] == "oo")
                         continue;
 
-                    DictionaryGraph[GetNeedSymbol(i)].Add(GetNeedSymbol(j), Convert.ToDouble(valuesLine[j]));
+                    DictionaryGraph[ALL_SYMBOLS[i].ToString()].Add(ALL_SYMBOLS[j].ToString(), Convert.ToDouble(valuesLine[j]));
                 }
             }
         }
@@ -51,13 +53,13 @@ namespace Graphs
         /// <summary>
         /// Перевод матрицы смежности в виде двухмерного массива
         /// </summary>
-        private double[,] CreateArrayGraph(FileStream matrixAdjacency)
+        private void CreateArrayGraph(FileStream matrixAdjacency)
         {
             // Получение строчек из файла
             var rowsMatrix = GetArrayLineFromFile(matrixAdjacency);
             
             // Массив под трансфер матрицы смежностей
-            double[,] newGraph = new double[rowsMatrix.Length, rowsMatrix.Length];
+            MatrixAdjacencyGraph = new double[rowsMatrix.Length, rowsMatrix.Length];
 
             // Работаем с каждым узлом графа в отдельности
             for (int i = 0; i < rowsMatrix.Length; i++)
@@ -66,12 +68,10 @@ namespace Graphs
 
                 for (int j = 0; j < valuesLine.Length; j++)
                     if (valuesLine[j] == "oo")
-                        newGraph[i, j] = Infinity;
+                        MatrixAdjacencyGraph[i, j] = INFINITY;
                     else
-                        newGraph[i, j] = Convert.ToInt32(valuesLine[j]);
+                        MatrixAdjacencyGraph[i, j] = Convert.ToInt32(valuesLine[j]);
             }
-
-            return newGraph;
         }
 
         private string[] GetArrayLineFromFile(FileStream matrixAdjacency)
@@ -91,12 +91,6 @@ namespace Graphs
                 rowsMatrix = matrixFromFile.Split(new string[] { "\n" }, StringSplitOptions.None);
 
             return rowsMatrix;
-        }
-
-        private string GetNeedSymbol(int index)
-        {
-            string allSymbols = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-            return allSymbols[index].ToString();
         }
 
         /// <summary>
@@ -121,7 +115,7 @@ namespace Graphs
                 else
                 {
                     if(!Costs.ContainsKey(node.Key))
-                        Costs[node.Key] = Infinity;
+                        Costs[node.Key] = INFINITY;
                 }
             }
 
@@ -182,7 +176,7 @@ namespace Graphs
 
         public string SearchLowestCostNode()
         {
-            double lowestCost = Infinity;   // Наименьшее значение стоимости
+            double lowestCost = INFINITY;   // Наименьшее значение стоимости
             string lowestCostNode = "";     // Узел с наименьшей стоимостью
 
             // Проходим по всем непроверенным узлам
@@ -214,7 +208,7 @@ namespace Graphs
 
             foreach (var node in DictionaryGraph)
                 if(node.Key?.ToString() != start?.ToString())
-                    Costs.Add(node.Key, Infinity);
+                    Costs.Add(node.Key, INFINITY);
 
             // Проходим ВСЕ ребра по n-1 раз, где n - количество вершин
             for(int i = 0; i < DictionaryGraph.Count - 1; i++)
@@ -259,6 +253,26 @@ namespace Graphs
             foreach (var node in Costs)
                 if (node.Key?.ToString() != start?.ToString())
                     Console.WriteLine($"to node {node.Key} - {node.Value}");
+        }
+
+        /// <summary>
+        /// Алгоритм Флойда-Уоршелла
+        /// </summary>
+        public void FloydWarshallAlgorithm(string start, string end)
+        {
+            int numStart = ALL_SYMBOLS.IndexOf(Convert.ToChar(start));
+            int numEnd = ALL_SYMBOLS.IndexOf(Convert.ToChar(end));
+
+            int lengthMatrix = MatrixAdjacencyGraph.GetUpperBound(0) + 1;
+            var matrix = MatrixAdjacencyGraph;
+
+            for (int k = 0; k < lengthMatrix; ++k)
+                for (int i = 0; i < lengthMatrix; ++i)
+                    for (int j = 0; j < lengthMatrix; ++j)
+                        if (matrix[i, k] < INFINITY && matrix[k, j] < INFINITY)
+                            matrix[i, j] = Math.Min(matrix[i, j], matrix[i, k] + matrix[k, j]);
+
+            Console.WriteLine($"The shortest way from {start} to {end} equals {matrix[numStart, numEnd]}");
         }
     }
 }
