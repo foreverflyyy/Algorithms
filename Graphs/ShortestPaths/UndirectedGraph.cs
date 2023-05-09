@@ -1,24 +1,21 @@
-﻿using BreadthAndDepth_FirstSearch;
-using System.IO;
+﻿using ShortestPaths.Enum;
 using System.Text;
-using static System.Net.Mime.MediaTypeNames;
 
-namespace Graphs
+namespace MethodsUndirectedGraph
 {
     /// <summary>
-    /// Класс с методами поиска в графе
+    /// Класс с методами для работы с неориентированным графом
     /// </summary>
-    /// <typeparam name="T"> Тип данных, который будет у значения узла </typeparam>
-    public class MethodsForSearch<T>
+    public class UndirectedGraph
     {
-        private Dictionary<T, List<T>> nodes = new Dictionary<T, List<T>>();
-        private List<Node<T>> nodesList = new List<Node<T>>();
-        private List<Node<T>> newUndirectedGraph = new List<Node<T>>();
+        private Dictionary<string, List<string>> nodes = new Dictionary<string, List<string>>();
+        private List<Node<string>> nodesList = new List<Node<string>>();
+        private List<Node<string>> newUndirectedGraph = new List<Node<string>>();
 
         // Список вершин в текущей компоненте связности
-        public List<Node<T>> Component = new List<Node<T>>();
+        public List<Node<string>> Component = new List<Node<string>>();
 
-        public MethodsForSearch(Dictionary<T, List<T>> nodes)
+        public UndirectedGraph(Dictionary<string, List<string>> nodes)
         {
             this.nodes = nodes;
             ConversationDictToListNodes();
@@ -29,9 +26,9 @@ namespace Graphs
         /// </summary>
         /// <param name="matrixAdjacency"> Передаваемая матрица смежности </param>
         /// <returns></returns>
-        static public Dictionary<char, List<char>> CreateGraphFromMatrixAdjacency(FileStream matrixAdjacency)
+        static public Dictionary<string, List<string>> CreateGraphFromMatrixAdjacency(FileStream matrixAdjacency)
         {
-            var allNodes = new Dictionary<char, List<char>>();
+            var allNodes = new Dictionary<string, List<string>>();
 
             // выделяем массив для считывания данных из файла
             byte[] buffer = new byte[matrixAdjacency.Length];
@@ -48,7 +45,7 @@ namespace Graphs
                 var valuesLine = rowsMatrix[i].Split(new char[] { ' ' });
 
                 // Создаём новый узел и добавляем в него связанные узлы
-                allNodes.Add(GetNeedSymbol(i), new List<char>() { });
+                allNodes.Add(GetNeedSymbol(i), new List<string>() { });
 
                 for (int j = 0; j < valuesLine.Length; j++)
                     if (Convert.ToInt32(valuesLine[j]) == 1)
@@ -63,10 +60,10 @@ namespace Graphs
         /// </summary>
         /// <param name="index"> Индекс буквы в алфавите </param>
         /// <returns></returns>
-        static public char GetNeedSymbol(int index)
+        static public string GetNeedSymbol(int index)
         {
             string allSymbols = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-            return allSymbols[index];
+            return allSymbols[index].ToString();
         }
 
         /// <summary>
@@ -204,14 +201,14 @@ namespace Graphs
         /// <param name="start"> Стартовый узел </param>
         /// <param name="end"> Конечный узел </param>
         /// <returns></returns>
-        public int BFS(T start, T end)
+        public int BFS(string start, string end)
         {
             if (start?.ToString() == end?.ToString())
                 return 0;
 
-            var queue = new Queue<T>();
-            List<T> checkedNode = new List<T>();
-            var recervedQueue = new Queue<T>();
+            var queue = new Queue<string>();
+            List<string> checkedNode = new List<string>();
+            var recervedQueue = new Queue<string>();
 
             // Заполняем первый уровень поиска
             var connectedNodes = nodes[start];
@@ -257,9 +254,9 @@ namespace Graphs
         /// <summary>
         /// Поиск в ширину (для отыскания компонент связности)
         /// </summary>
-        public void BFS(Node<T> node)
+        public void BFS(Node<string> node)
         {
-            var queue = new Queue<Node<T>>();
+            var queue = new Queue<Node<string>>();
 
             // Заполняем первый уровень поиска
             foreach (var currentNode in node.ConnectedNodes)
@@ -290,7 +287,7 @@ namespace Graphs
         /// <summary>
         /// Поиск в глубину (для отыскания компонент связности)
         /// </summary>
-        public void DFS(Node<T> node)
+        public void DFS(Node<string> node)
         {
             node.Visited = true;
             Component.Add(node);
@@ -320,7 +317,7 @@ namespace Graphs
         #endregion
         public void ConnectivityComponent(TypeSearch type)
         {
-            var checkListNodes = new List<Node<T>>();
+            var checkListNodes = new List<Node<string>>();
 
             if(type == TypeSearch.StrongConnectivityComponent)
                 checkListNodes = newUndirectedGraph;
@@ -358,7 +355,7 @@ namespace Graphs
         {
             // Для каждой пары вершин определяем, являются ли они сильно связанные
             // это значит, что существует путь из первой вершины по вторую и из второй в первую
-            var strongComponentList = new List<List<Node<T>>>();
+            var strongComponentList = new List<List<Node<string>>>();
 
             for(int i = 0; i < nodesList.Count(); i++)
             {
@@ -370,12 +367,12 @@ namespace Graphs
                     var secondStrongComponent = BFS(nodesList[j].Name, nodesList[i].Name);
 
                     if(firstStrongComponent != 0 && secondStrongComponent != 0)
-                        strongComponentList.Add(new List<Node<T>> { nodesList[i], nodesList[j] });
+                        strongComponentList.Add(new List<Node<string>> { nodesList[i], nodesList[j] });
                 }
             }
 
             // на основе сильной связанности вершин строим неориентированный граф
-            newUndirectedGraph = new List<Node<T>>();
+            newUndirectedGraph = new List<Node<string>>();
 
             for (int i = 0; i < strongComponentList.Count(); i++)
             {
@@ -387,7 +384,7 @@ namespace Graphs
 
                 if (currentMainNode == null)
                 {
-                    currentMainNode = new Node<T> { Name = firstKey.Name, ConnectedNodes = new List<Node<T>>() };
+                    currentMainNode = new Node<string> { Name = firstKey.Name, ConnectedNodes = new List<Node<string>>() };
                     newUndirectedGraph.Add(currentMainNode);
                 }
 
@@ -407,7 +404,7 @@ namespace Graphs
 
                         if (connectedNode == null)
                         {
-                            var newNode = new Node<T> { Name = strongComponentList[j][1].Name, ConnectedNodes = new List<Node<T>>() };
+                            var newNode = new Node<string> { Name = strongComponentList[j][1].Name, ConnectedNodes = new List<Node<string>>() };
                             newUndirectedGraph.Add(newNode);
                             currentMainNode?.ConnectedNodes.Add(newNode);
                         }
@@ -428,9 +425,9 @@ namespace Graphs
         /// </summary>
         /// <param name="start"> Стартовый узел </param>
         /// <returns></returns>
-        public Dictionary<T, int> ShortWaysToNodes(T start, TypeSearch type)
+        public Dictionary<string, int> ShortWaysToNodes(string start, TypeSearch type)
         {
-            var allWays = new Dictionary<T, int>();
+            var allWays = new Dictionary<string, int>();
 
             foreach (var node in nodes)
             {
@@ -464,13 +461,13 @@ namespace Graphs
         {
             foreach (var node in nodes)
             {
-                nodesList.Add(new Node<T>() { Name = node.Key, ConnectedNodes = new List<Node<T>>(), Visited = false });
+                nodesList.Add(new Node<string>() { Name = node.Key, ConnectedNodes = new List<Node<string>>(), Visited = false });
             }
             foreach (var nodeDict in nodes)
             {
                 var listNodes = nodeDict.Value;
                 var needNode = nodesList.FirstOrDefault(x => x.Name?.ToString() == nodeDict.Key?.ToString());
-                var choiceNodes = new List<Node<T>>();
+                var choiceNodes = new List<Node<string>>();
 
                 foreach (var linkNode in listNodes)
                 {
@@ -481,126 +478,6 @@ namespace Graphs
                 needNode.ConnectedNodes.AddRange(choiceNodes);
             }
         }
-
-        #region Незаконченная реализация
-
-        /// <summary>
-        /// Недозаконченная реализация поиска в глубину кратчайшего пути
-        /// </summary>
-        /// <param name="start"> Стартовый узел </param>
-        /// <param name="end"> Конечный узел </param>
-        /// <returns></returns>
-        public int DFSWithLevels(T start, T end)
-        {
-            // Если стартовая это и есть конечная
-            if (start.ToString() == end.ToString())
-                return 0;
-
-            int currentWays = 1;    // Счётчик сколько прошли пути
-            int shortWays = 0;    // Счётчик кратчайшего пути
-            var stack = new Stack<Node<T>>();
-
-            var firstNode = nodesList.FirstOrDefault(x => x.Name?.ToString() == start?.ToString());
-            firstNode.Visited = true;
-
-            var previous = firstNode;
-
-            // Заполняем первый уровень поиска (у начального узла вводим смежные ему узлы)
-            foreach (var node in firstNode.ConnectedNodes)
-                stack.Push(node);
-
-            // Реализация поиска
-            while (stack.Count != 0)
-            {
-                // берём верхний элемент с стека
-                var first = stack.Pop();
-                first.Previous = previous;
-
-                // Проверка соответствию нашей цели
-                if (first.Name?.ToString() == end?.ToString())
-                {
-                    if (shortWays == 0 || shortWays < currentWays)
-                    {
-                        shortWays = currentWays;
-                        first.Visited = true;
-                        previous = FindWayBack(previous, ref currentWays, end);
-                        continue;
-                    }
-                }
-
-                if (first.Visited == true)
-                {
-                    previous = FindWayBack(previous, ref currentWays, end);
-                    continue;
-                }
-
-                first.Visited = true;
-                // Берём связанные узлы, только те, которые не привязали
-                var connectedNodes = first.ConnectedNodes.Where(x => !x.Visited || x.Name?.ToString() == end?.ToString()).ToList();
-
-                if (connectedNodes.Count == 0)
-                {
-                    previous = FindWayBack(previous, ref currentWays, end)?.Previous;
-                    continue;
-                }
-
-                // Добавление следующего уровня поиска
-                foreach (var node in connectedNodes)
-                    stack.Push(node);
-
-                currentWays++;
-                previous = first;
-            }
-
-            return shortWays;
-        }
-
-        /// <summary>
-        /// Поиск пути назад (ищем узел, через который будем осуществялть дальнейшую проверку)
-        /// </summary>
-        /// <param name="previous"> Предыдущий проверяемый узел </param>
-        /// <param name="currentWays"> Сколько прошли на данный момент </param>
-        /// <param name="end"> Узел до которого ищем путь</param>
-        /// <returns></returns>
-        public Node<T> FindWayBack(Node<T> previous, ref int currentWays, T end)
-        {
-            // Проверяем, сколько нам ещё надо пройти узлов через предыдущий узел
-            int checkedConnectedNodes = previous.ConnectedNodes.Where(x => x.Visited).Count();
-            var different = previous.ConnectedNodes.Count - checkedConnectedNodes;
-
-            nodesList.FirstOrDefault(x => x.Name?.ToString() == end?.ToString()).Visited = false;
-
-            // Значит, что в предыдущем узле остались недопроверенные связанные узлы
-            if (different != 0)
-            {
-                currentWays--;
-                return previous;
-            }
-
-            // Ищем предыдущий узел, где ещё можно проверить связанные узлы к нему
-            previous = previous.Previous;
-            currentWays--;
-
-            while (true)
-            {
-                checkedConnectedNodes = previous.ConnectedNodes.Where(x => x.Visited).Count();
-                different = previous.ConnectedNodes.Count - checkedConnectedNodes;
-                bool flag = previous.ConnectedNodes.Contains(nodesList.FirstOrDefault(x => x.Name?.ToString() == end?.ToString()));
-
-                if (different == 0 && !flag)
-                {
-                    previous = previous.Previous;
-                    currentWays--;
-                    continue;
-                }
-
-                break;
-            }
-
-            return previous;
-        }
-
-        #endregion
     }
 
     public class Node<T>

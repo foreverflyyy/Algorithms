@@ -1,5 +1,4 @@
-﻿
-namespace ShortestPaths
+﻿namespace ShortestPaths.Enum
 {
     public enum TypeConvertFromFile
     {

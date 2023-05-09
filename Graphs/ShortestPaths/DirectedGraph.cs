@@ -1,9 +1,9 @@
-﻿using ShortestPaths;
+﻿using ShortestPaths.Enum;
 using System.Text;
 
-namespace Graphs
+namespace MethodsDirectedGraph
 {
-    public class MethodsShortestPaths
+    public class DirectedGraph
     {
         private double[,] MatrixAdjacencyGraph;
 
@@ -16,7 +16,7 @@ namespace Graphs
         private readonly double INFINITY = Double.PositiveInfinity;
         private readonly string ALL_SYMBOLS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
-        public MethodsShortestPaths(FileStream matrixAdjacency, TypeConvertFromFile type)
+        public DirectedGraph(FileStream matrixAdjacency, TypeConvertFromFile type)
         {
             if (type == TypeConvertFromFile.ToDictionary)
                 CreateDictionaryOfGraph(matrixAdjacency);
@@ -24,7 +24,7 @@ namespace Graphs
                 CreateArrayGraph(matrixAdjacency);
         }
         
-        public MethodsShortestPaths(string data)
+        public DirectedGraph(string data)
         {
             CreateGraphByLineInfo(data);
         }

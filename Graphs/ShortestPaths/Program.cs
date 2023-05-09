@@ -1,51 +1,85 @@
-﻿using Graphs;
+﻿using ShortestPaths.Enum;
+using MethodsDirectedGraph;
+using MethodsUndirectedGraph;
 
-namespace ShortestPaths {
+namespace ShortestPaths
+{
 
     public class Program
     {
         static void Main(string[] args)
         {
-            //ReadDataFromFile();
+            //WorkWithDirectedGraph();
 
-            ReadDataFromConsole();
+            WorkWithUndirectedGraph();
         }
 
-        /// <summary>
-        /// Чтение матрицы смежности/индицентности с файла
-        /// </summary>
-        static void ReadDataFromFile()
+        static void WorkWithDirectedGraph()
         {
-            string path = @"D:\dream\Algorithms\Graphs\ShortestPaths\matrixInput2.txt";
-            //string path = @"D:\workSpaceNU\primat\Algorithms\Graphs\ShortestPaths\matrixInput1.txt";
-            var matrixAdjacency = new FileStream(path, FileMode.OpenOrCreate);
+            var matrixAdjacency = ReadDataFromFile("ForDirectedGraph"); ;
 
-            var methods = new MethodsShortestPaths(matrixAdjacency, TypeConvertFromFile.ToArray);
+            var methods = new DirectedGraph(matrixAdjacency, TypeConvertFromFile.ToArray);
 
             //methods.DijkstraAlgorithm("A", "D");
             //methods.BellmanFordAlgorithm("A");
             methods.FloydWarshallAlgorithm("A", "D");
         }
         
+        static void WorkWithUndirectedGraph()
+        {
+            var fileMatrixIncidence = ReadDataFromFile("ForUndirectedGraph");
+
+            // Переводим матрицу инцидентности в матрицу смежности=
+            UndirectedGraph.ChangeMatrixIncidenceToMatrixAdjacency(fileMatrixIncidence, TypeGraph.WeightedUndirectedGraph);
+            fileMatrixIncidence?.Close();
+
+            var fileMatrixAdjacency = new FileStream("matrixInput8.txt", FileMode.OpenOrCreate);
+            // Берём файл для чтения матрицы и создаём граф, по которому будем выполнять обход
+            var graph = UndirectedGraph.CreateGraphFromMatrixAdjacency(fileMatrixAdjacency);
+            fileMatrixAdjacency?.Close();
+
+            var startNode = "A";
+            var methods = new UndirectedGraph(graph);
+            var dictWays = methods.ShortWaysToNodes(startNode, TypeSearch.BreadthFirstSearch);
+
+            Console.WriteLine($"All ways from node - {startNode}");
+
+            foreach (var node in dictWays)
+                Console.WriteLine($"To node: {node.Key}, short road: {node.Value}");
+        }
+
+        /// <summary>
+        /// Чтение матрицы смежности/инцидентности с файла
+        /// </summary>
+        static FileStream ReadDataFromFile(string typeGraph = "ForDirectedGraph")
+        {
+            string path = @$"D:\dream\Algorithms\Graphs\ShortestPaths\{typeGraph}\matrixInput2.txt";
+            //string path = @$"D:\workSpaceNU\primat\Algorithms\Graphs\ShortestPaths\{typeGraph}\matrixInput1.txt";
+
+            return new FileStream(path, FileMode.OpenOrCreate);
+        }
+        
         /// <summary>
         /// Чтение данных графа с консоли
         /// </summary>
-        static void ReadDataFromConsole()
+        static string ReadDataFromConsole()
         {
             // Example:
             // (0,3,5);(0,7,16);(1,4,18);(1,5,14);(1,6,16);(1,7,17);(2,3,10);(2,4,17);(4,0,11);(4,1,18);(4,7,19);(5,2,16);(5,4,15);(5,6,14);(5,7,18);(6,4,16);(6,5,19);(7,2,11)
 
             Console.Write("Please, write info about graph: ");
-            string data = Console.ReadLine() ?? "";
-
-            var methods = new MethodsShortestPaths(data);
-
-            //methods.DijkstraAlgorithm("A", "D");
-            //methods.BellmanFordAlgorithm("A");
-            //methods.FloydWarshallAlgorithm("A", "D");
+            return Console.ReadLine() ?? "";
         }
     }
 }
+
+// Поиск в ширину
+// Найти в заданном графе кратчайшие пути из заданной вершины до всех остальных вершин с помощью поиска в ширину
+// Найти в заданном графе количество и состав компонент связности с помощью поиска в ширину
+
+//Поиск в глубину
+// Найти в заданном графе количество и состав компонент связности с помощью поиска в глубину
+// Найти в заданном орграфе количество и состав сильно связных компонент с помощью поиска в глубину.
 
 // Кратчайшие пути из одной вершины
 // Реализовать алгоритм Дейкстры поиска кратчайших путей из одной вершины, используя в качестве приоритетной очереди обычный массив

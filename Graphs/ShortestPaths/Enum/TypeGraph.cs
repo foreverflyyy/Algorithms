@@ -1,5 +1,4 @@
-﻿
-namespace BreadthAndDepth_FirstSearch
+﻿namespace ShortestPaths.Enum
 {
     public enum TypeGraph
     {
