@@ -13,8 +13,8 @@ namespace Graphs
 
         private List<string> checkedNodes = new List<string>(); // Список проверенных узлов
 
-        private const double INFINITY = Double.PositiveInfinity;
-        private const string ALL_SYMBOLS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        private readonly double INFINITY = Double.PositiveInfinity;
+        private readonly string ALL_SYMBOLS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
         public MethodsShortestPaths(FileStream matrixAdjacency, TypeConvertFromFile type)
         {
@@ -22,6 +22,11 @@ namespace Graphs
                 CreateDictionaryOfGraph(matrixAdjacency);
             else if(type == TypeConvertFromFile.ToArray)
                 CreateArrayGraph(matrixAdjacency);
+        }
+        
+        public MethodsShortestPaths(string data)
+        {
+            CreateGraphByLineInfo(data);
         }
 
         /// <summary>
@@ -91,6 +96,44 @@ namespace Graphs
                 rowsMatrix = matrixFromFile.Split(new string[] { "\n" }, StringSplitOptions.None);
 
             return rowsMatrix;
+        }
+
+        /// <summary>
+        /// Создание графа из данных с строки
+        /// </summary>
+        private void CreateGraphByLineInfo(string data)
+        {
+            if (data == "")
+                throw new Exception("Please, write correct info about graph!");
+
+            DictionaryGraph = new Dictionary<string, Dictionary<string, double>>();
+
+            string[] infoAboutNodes = data.Split(new string[] { ";" }, StringSplitOptions.None);
+
+            // Работаем с каждым узлом графа в отдельности
+            for (int i = 0; i < infoAboutNodes.Length; i++)
+            {
+                // Удаляю первую скобку и последнюю
+                string valuesLine = infoAboutNodes[i].Remove(infoAboutNodes[i].Length - 1, 1).Remove(0, 1);
+
+                // Разбиваем на три числа (1е - начальная вершина, 2е - конечная вершина, 3е - вес)
+                string[] infoAboutNode = valuesLine.Split(new string[] { "," }, StringSplitOptions.None);
+
+                var nameStartNode = ALL_SYMBOLS[Convert.ToInt32(infoAboutNode[0])].ToString();
+                var nameEndNode = ALL_SYMBOLS[Convert.ToInt32(infoAboutNode[1])].ToString();
+
+                if (DictionaryGraph.ContainsKey(nameStartNode))
+                {
+                    DictionaryGraph[nameStartNode].Add(nameEndNode, Convert.ToDouble(infoAboutNode[2]));
+                }
+                else
+                {
+                    var dictAsValue = new Dictionary<string, double>();
+                    dictAsValue.Add(nameEndNode, Convert.ToDouble(infoAboutNode[2]));
+
+                    DictionaryGraph.Add(nameStartNode, dictAsValue);
+                }
+            }
         }
 
         /// <summary>
