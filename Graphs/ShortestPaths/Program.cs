@@ -29,23 +29,7 @@ namespace ShortestPaths
         {
             var fileMatrixIncidence = ReadDataFromFile("ForUndirectedGraph");
 
-            // Переводим матрицу инцидентности в матрицу смежности=
-            UndirectedGraph.ChangeMatrixIncidenceToMatrixAdjacency(fileMatrixIncidence, TypeGraph.WeightedUndirectedGraph);
-            fileMatrixIncidence?.Close();
 
-            var fileMatrixAdjacency = new FileStream("matrixInput8.txt", FileMode.OpenOrCreate);
-            // Берём файл для чтения матрицы и создаём граф, по которому будем выполнять обход
-            var graph = UndirectedGraph.CreateGraphFromMatrixAdjacency(fileMatrixAdjacency);
-            fileMatrixAdjacency?.Close();
-
-            var startNode = "A";
-            var methods = new UndirectedGraph(graph);
-            var dictWays = methods.ShortWaysToNodes(startNode, TypeSearch.BreadthFirstSearch);
-
-            Console.WriteLine($"All ways from node - {startNode}");
-
-            foreach (var node in dictWays)
-                Console.WriteLine($"To node: {node.Key}, short road: {node.Value}");
         }
 
         /// <summary>

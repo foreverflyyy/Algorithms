@@ -1,5 +1,6 @@
 ﻿using ShortestPaths.Enum;
 using System.Text;
+using Graph;
 
 namespace MethodsUndirectedGraph
 {
@@ -8,36 +9,38 @@ namespace MethodsUndirectedGraph
     /// </summary>
     public class UndirectedGraph
     {
-        private Dictionary<string, List<string>> nodes = new Dictionary<string, List<string>>();
+        // Хэш-таблица с узлами и их ребрами с весами
+        private Dictionary<string, List<string>> DictionaryGraph = new Dictionary<string, List<string>>();
+        private List<string> checkedNodes = new List<string>();
+        
         private List<Node<string>> nodesList = new List<Node<string>>();
         private List<Node<string>> newUndirectedGraph = new List<Node<string>>();
-
-        // Список вершин в текущей компоненте связности
         public List<Node<string>> Component = new List<Node<string>>();
 
-        public UndirectedGraph(Dictionary<string, List<string>> nodes)
+        private readonly string ALL_SYMBOLS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+        public UndirectedGraph(FileStream file, TypeMatrixFile type)
         {
-            this.nodes = nodes;
-            ConversationDictToListNodes();
+            if (type == TypeMatrixFile.Adjacency)
+                GraphByMatrixAdjacency(file);
+            else if (type == TypeMatrixFile.Incidence)
+                GraphByMatrixIncidence(file);
+        }
+
+        public UndirectedGraph(string data)
+        {
+            if (data == "")
+                throw new Exception("Please, write correct info about graph!");
+
+            CreateGraphByLineInfo(data);
         }
 
         /// <summary>
         /// Создание графа из матрицы смежности
         /// </summary>
-        /// <param name="matrixAdjacency"> Передаваемая матрица смежности </param>
-        /// <returns></returns>
-        static public Dictionary<string, List<string>> CreateGraphFromMatrixAdjacency(FileStream matrixAdjacency)
+        public void GraphByMatrixAdjacency(FileStream file)
         {
-            var allNodes = new Dictionary<string, List<string>>();
-
-            // выделяем массив для считывания данных из файла
-            byte[] buffer = new byte[matrixAdjacency.Length];
-            // считываем данные
-            matrixAdjacency.Read(buffer, 0, buffer.Length);
-            // декодируем байты в строку (получаем строку)
-            string matrixFromFile = Encoding.Default.GetString(buffer);
-
-            string[] rowsMatrix = matrixFromFile.Split(new string[] { "\n" }, StringSplitOptions.None);
+            var rowsMatrix = GetArrayLineFromFile(file);
 
             // Работаем с каждым узлом графа в отдельности
             for (int i = 0; i < rowsMatrix.Length; i++)
@@ -45,48 +48,83 @@ namespace MethodsUndirectedGraph
                 var valuesLine = rowsMatrix[i].Split(new char[] { ' ' });
 
                 // Создаём новый узел и добавляем в него связанные узлы
-                allNodes.Add(GetNeedSymbol(i), new List<string>() { });
+                DictionaryGraph.Add(ALL_SYMBOLS[i].ToString(), new List<string>() { });
 
                 for (int j = 0; j < valuesLine.Length; j++)
                     if (Convert.ToInt32(valuesLine[j]) == 1)
-                        allNodes[GetNeedSymbol(i)].Add(GetNeedSymbol(j));
+                        DictionaryGraph[ALL_SYMBOLS[j].ToString()].Add(ALL_SYMBOLS[j].ToString());
             }
+        }
+        
+        public void GraphByMatrixIncidence(FileStream file)
+        {
+            var rowsMatrix = GetArrayLineFromFile(file);
 
-            return allNodes;
+            // Работаем с каждым узлом графа в отдельности
+            for (int i = 0; i < rowsMatrix.Length; i++)
+            {
+                var valuesLine = rowsMatrix[i].Split(new char[] { ' ' });
+
+                // Создаём новый узел и добавляем в него связанные узлы
+                DictionaryGraph.Add(ALL_SYMBOLS[i].ToString(), new List<string>() { });
+
+                for (int j = 0; j < valuesLine.Length; j++)
+                    if (Convert.ToInt32(valuesLine[j]) == 1)
+                        DictionaryGraph[ALL_SYMBOLS[j].ToString()].Add(ALL_SYMBOLS[j].ToString());
+            }
+        }
+
+        private string[] GetArrayLineFromFile(FileStream file)
+        {
+            // выделяем массив для считывания данных из файла
+            byte[] buffer = new byte[file.Length];
+            // считываем данные
+            file.Read(buffer, 0, buffer.Length);
+            // декодируем байты в строку (получаем строку)
+            string matrixFromFile = Encoding.Default.GetString(buffer);
+
+            string[] rowsMatrix;
+
+            if (matrixFromFile.Contains("\r"))
+                rowsMatrix = matrixFromFile.Split(new string[] { "\r\n" }, StringSplitOptions.None);
+            else
+                rowsMatrix = matrixFromFile.Split(new string[] { "\n" }, StringSplitOptions.None);
+
+            return rowsMatrix;
         }
 
         /// <summary>
-        /// Получение буквы по индексу алфавита
+        /// Создание графа по данным с строки
         /// </summary>
-        /// <param name="index"> Индекс буквы в алфавите </param>
-        /// <returns></returns>
-        static public string GetNeedSymbol(int index)
+        private void CreateGraphByLineInfo(string data)
         {
-            string allSymbols = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-            return allSymbols[index].ToString();
+            string[] infoAboutNodes = data.Split(new string[] { ";" }, StringSplitOptions.None);
+
+            // Работаем с каждым узлом графа в отдельности
+            for (int i = 0; i < infoAboutNodes.Length; i++)
+            {
+                // Удаляю первую скобку и последнюю
+                string valuesLine = infoAboutNodes[i].Remove(infoAboutNodes[i].Length - 1, 1).Remove(0, 1);
+
+                // Разбиваем на три числа (1е - начальная вершина, 2е - конечная вершина, 3е - вес)
+                string[] infoAboutNode = valuesLine.Split(new string[] { "," }, StringSplitOptions.None);
+
+                var nameStartNode = ALL_SYMBOLS[Convert.ToInt32(infoAboutNode[0])].ToString();
+                var nameEndNode = ALL_SYMBOLS[Convert.ToInt32(infoAboutNode[1])].ToString();
+
+                if (DictionaryGraph.ContainsKey(nameStartNode))
+                    DictionaryGraph[nameStartNode].Add(nameEndNode);
+                else
+                    DictionaryGraph.Add(nameStartNode, new List<string>());
+            }
         }
 
         /// <summary>
         /// Перевод из матрицы инцидентности в матрицу смежности
         /// </summary>
-        /// <param name="matrixAdjacency"> Передаваемая матрица инцидентности </param>
-        /// <returns></returns>
-        static public void ChangeMatrixIncidenceToMatrixAdjacency(FileStream matrixIncidence, TypeGraph typeGraph)
+        public void TransferIncidenceToAdjacency()
         {
-            // выделяем массив для считывания данных из файла
-            byte[] buffer = new byte[matrixIncidence.Length];
-            // считываем данные
-            matrixIncidence.Read(buffer, 0, buffer.Length);
-            // декодируем байты в строку (получаем строку)
-            string matrixFromFile = Encoding.Default.GetString(buffer);
-
-            string[] rowsMatrix = new string[matrixFromFile.Length];
-
-            // Разбиваем на массив по рядам
-            if (matrixFromFile.Contains("\r"))
-                rowsMatrix = matrixFromFile.Split(new string[] { "\r\n" }, StringSplitOptions.None);
-            else
-                rowsMatrix = matrixFromFile.Split(new string[] { "\n" }, StringSplitOptions.None);
+            /*var rowsMatrix = GetArrayLineFromFile(file);
 
             var defaultMatrix = new List<List<string>>();
 
@@ -173,7 +211,7 @@ namespace MethodsUndirectedGraph
             {
                 foreach (var line in resultAdjacencyMatrix)
                     streamWrite.WriteLine(line);
-            }
+            }*/
 
             // BUG: самое правое нижнее значение не отображается в полученном файле
         }
@@ -198,9 +236,6 @@ namespace MethodsUndirectedGraph
         /// <summary>
         /// Поиск в ширину (поиск кратчайшего расстояния до узла)
         /// </summary>
-        /// <param name="start"> Стартовый узел </param>
-        /// <param name="end"> Конечный узел </param>
-        /// <returns></returns>
         public int BFS(string start, string end)
         {
             if (start?.ToString() == end?.ToString())
@@ -211,7 +246,7 @@ namespace MethodsUndirectedGraph
             var recervedQueue = new Queue<string>();
 
             // Заполняем первый уровень поиска
-            var connectedNodes = nodes[start];
+            var connectedNodes = DictionaryGraph[start];
             foreach (var node in connectedNodes)
                 queue.Enqueue(node);
 
@@ -242,7 +277,7 @@ namespace MethodsUndirectedGraph
                     return ways;
 
                 // Добавление следующего уровня поиска
-                connectedNodes = nodes[first].Where(x => !checkedNode.Contains(x)).ToList();
+                connectedNodes = DictionaryGraph[first].Where(x => !checkedNode.Contains(x)).ToList();
 
                 foreach (var node in connectedNodes)
                     recervedQueue.Enqueue(node);
@@ -317,6 +352,8 @@ namespace MethodsUndirectedGraph
         #endregion
         public void ConnectivityComponent(TypeSearch type)
         {
+            ConversationDictToListNodes();
+
             var checkListNodes = new List<Node<string>>();
 
             if(type == TypeSearch.StrongConnectivityComponent)
@@ -353,6 +390,8 @@ namespace MethodsUndirectedGraph
 
         public void StrongConnectivityComponent()
         {
+            ConversationDictToListNodes();
+
             // Для каждой пары вершин определяем, являются ли они сильно связанные
             // это значит, что существует путь из первой вершины по вторую и из второй в первую
             var strongComponentList = new List<List<Node<string>>>();
@@ -421,6 +460,32 @@ namespace MethodsUndirectedGraph
         }
 
         /// <summary>
+        /// Перевод из словаря в список с классом Node
+        /// </summary>
+        public void ConversationDictToListNodes()
+        {
+            foreach (var node in DictionaryGraph)
+            {
+                nodesList.Add(new Node<string>() { Name = node.Key, ConnectedNodes = new List<Node<string>>(), Visited = false });
+            }
+
+            foreach (var nodeDict in DictionaryGraph)
+            {
+                var listNodes = nodeDict.Value;
+                var needNode = nodesList.FirstOrDefault(x => x.Name?.ToString() == nodeDict.Key?.ToString());
+                var choiceNodes = new List<Node<string>>();
+
+                foreach (var linkNode in listNodes)
+                {
+                    var oneOfNode = nodesList.FirstOrDefault(x => x.Name?.ToString() == linkNode?.ToString());
+                    choiceNodes.Add(oneOfNode);
+                }
+
+                needNode.ConnectedNodes.AddRange(choiceNodes);
+            }
+        }
+
+        /// <summary>
         /// Поиск количества путей ко всем узлам через заданный поиск.
         /// </summary>
         /// <param name="start"> Стартовый узел </param>
@@ -429,7 +494,7 @@ namespace MethodsUndirectedGraph
         {
             var allWays = new Dictionary<string, int>();
 
-            foreach (var node in nodes)
+            foreach (var node in DictionaryGraph)
             {
                 var nameNode = node.Key;
                 if (start?.ToString() == nameNode?.ToString())
@@ -452,39 +517,5 @@ namespace MethodsUndirectedGraph
 
             return allWays;
         }
-
-        /// <summary>
-        /// Перевод из словаря в список с классом Node
-        /// </summary>
-        /// <returns></returns>
-        public void ConversationDictToListNodes()
-        {
-            foreach (var node in nodes)
-            {
-                nodesList.Add(new Node<string>() { Name = node.Key, ConnectedNodes = new List<Node<string>>(), Visited = false });
-            }
-            foreach (var nodeDict in nodes)
-            {
-                var listNodes = nodeDict.Value;
-                var needNode = nodesList.FirstOrDefault(x => x.Name?.ToString() == nodeDict.Key?.ToString());
-                var choiceNodes = new List<Node<string>>();
-
-                foreach (var linkNode in listNodes)
-                {
-                    var oneOfNode = nodesList.FirstOrDefault(x => x.Name?.ToString() == linkNode?.ToString());
-                    choiceNodes.Add(oneOfNode);
-                }
-
-                needNode.ConnectedNodes.AddRange(choiceNodes);
-            }
-        }
-    }
-
-    public class Node<T>
-    {
-        public T Name { get; set; }
-        public List<Node<T>> ConnectedNodes { get; set; }
-        public bool Visited { get; set; }
-        public Node<T> Previous { get; set; }
     }
 }
