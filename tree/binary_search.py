@@ -1,4 +1,3 @@
-import math
 from typing import List, Optional
 
 class TreeNode:
@@ -9,6 +8,7 @@ class TreeNode:
 
 
 class Solution:
+    # Default binary search
     def search(self, nums: List[int], target: int) -> int:
         lower, high = 0, len(nums) - 1
         while lower <= high:
@@ -22,6 +22,7 @@ class Solution:
 
         return -1
 
+    # Check symmetric tree
     def isSymmetric(self, root: Optional[TreeNode], first=None, second=None) -> bool:
         if root:
             return self.isSymmetric(None, root.left, root.right)
@@ -37,6 +38,7 @@ class Solution:
         check_2 = self.isSymmetric(None, first.right, second.left)
         return check_1 and check_2
 
+    # Construct Binary Tree from Inorder and Postorder Traversal
     def buildTree(self, inorder: List[int], postorder: List[int]) -> Optional[TreeNode]:
         in_indexes = {}
         for i, num in enumerate(inorder):
@@ -54,17 +56,7 @@ class Solution:
 
         return helper(0, len(postorder) - 1)
 
-    # def buildTree(self, inorder, postorder):
-    #     if not inorder or not postorder:
-    #         return None
-    #
-    #     root = TreeNode(postorder.pop())
-    #     in_order_index = inorder.index(root.val)
-    #
-    #     root.right = self.buildTree(inorder[in_order_index + 1:], postorder)
-    #     root.left = self.buildTree(inorder[:in_order_index], postorder)
-    #     return root
-
+    # Construct Binary Tree from Preorder and Inorder Traversal
     def build_tree_by_pre_and_in_order(self, pre_order: List[int], in_order: List[int]) -> Optional[TreeNode]:
         def helper(pre_start, in_start, in_end, pre_order, in_order):
             if pre_start > len(pre_order) - 1 or in_start > in_end or in_start == -1:
