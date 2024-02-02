@@ -117,35 +117,26 @@ class Solution:
 
         return self.get_tree_path(data, 0, 0)
 
-
     # Lowest Common Ancestor of a Binary Tree
-    def lowestCommonAncestor(self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -> 'TreeNode':
-        if root.val == p == q:
+    def lowestCommonAncestor(self, root, p, q):
+        if root in (None, p, q):
             return root
-
-        stack_1 = [root.left]
-        stack_2 = [root.right]
-
-        while len(stack_1) != 0 or len(stack_2) != 0:
-            first_el = stack_1.pop()
-            second_el = stack_2.pop()
-
-            if first_el == p or first_el == q:
-                pass
-
-            if second_el == p or second_el == q:
-                pass
-
-        return root
+        left, right = (self.lowestCommonAncestor(kid, p, q) for kid in (root.left, root.right))
+        return root if left and right else left or right
 
 
-tr_7 = TreeNode(9)
-tr_6 = TreeNode(-1)
-tr_5 = TreeNode(2, tr_7)
-tr_4 = TreeNode(3, tr_6)
-tr_3 = TreeNode(7, tr_5)
-tr_2 = TreeNode(4, tr_4)
-tr_1 = TreeNode(5, tr_2, tr_3)
+tr_9 = TreeNode(4)
+tr_8 = TreeNode(7)
+
+tr_7 = TreeNode(8)
+tr_6 = TreeNode(0)
+
+tr_5 = TreeNode(2, tr_8, tr_9)
+tr_4 = TreeNode(6)
+
+tr_3 = TreeNode(1, tr_6, tr_7)
+tr_2 = TreeNode(5, tr_4, tr_5)
+tr_1 = TreeNode(3, tr_2, tr_3)
 
 tr5 = TreeNode(5)
 tr4 = TreeNode(4)
@@ -154,7 +145,5 @@ tr2 = TreeNode(2)
 tr1 = TreeNode(1, tr2, tr3)
 
 solution = Solution()
-res_serialize = solution.serialize(tr_1)
-print("res_serialize", res_serialize)
-res_deserialize = solution.deserialize(res_serialize)
-print("res_deserialize", res_deserialize)
+res = solution.lowestCommonAncestor(tr_1, tr_2, tr_9)
+print("res", res)

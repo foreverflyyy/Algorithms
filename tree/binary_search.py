@@ -9,18 +9,6 @@ class TreeNode:
 
 class Solution:
     # Default binary search
-    def search(self, nums: List[int], target: int) -> int:
-        lower, high = 0, len(nums) - 1
-        while lower <= high:
-            mid = (high + lower) // 2
-            if nums[mid] > target:
-                high = mid - 1
-            elif nums[mid] < target:
-                lower = mid + 1
-            else:
-                return mid
-
-        return -1
 
     # Check symmetric tree
     def isSymmetric(self, root: Optional[TreeNode], first=None, second=None) -> bool:
