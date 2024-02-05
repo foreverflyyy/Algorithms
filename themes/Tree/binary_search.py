@@ -10,7 +10,7 @@ class TreeNode:
 class Solution:
     # Default binary search
 
-    # Check symmetric tree
+    # Check symmetric Tree
     def isSymmetric(self, root: Optional[TreeNode], first=None, second=None) -> bool:
         if root:
             return self.isSymmetric(None, root.left, root.right)
