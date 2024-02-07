@@ -30,7 +30,7 @@ class Solution:
             root = root.next[symbol]
         root.list.append(index)
         root.index = index
-
+    # [[0, 1], [1, 0], [2, 4], [3, 2]]
     def search(self, words, i, root, res):
         for j in range(len(words[i])):
             if root.index >= 0 and root.index != i and self.isPalindrome(words[i], j, len(words[i]) - 1):
@@ -41,9 +41,8 @@ class Solution:
                 return
 
         for j in root.list:
-            if i == j:
-                continue
-            res.append([i, j])
+            if i != j:
+                res.append([i, j])
 
     def isPalindrome(self, word, i, j):
         while i < j:
