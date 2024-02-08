@@ -19,7 +19,7 @@ class Solution:
             return True
         if not first or not second:
             return False
-        if first.val != second.val:
+        if first.mult != second.mult:
             return False
 
         check_1 = self.isSymmetric(None, first.left, second.right)

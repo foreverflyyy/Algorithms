@@ -14,7 +14,7 @@ class Solution:
                 return True
             if not p or not q:
                 return False
-            if p.val != q.val:
+            if p.mult != q.mult:
                 return False
             return True
 

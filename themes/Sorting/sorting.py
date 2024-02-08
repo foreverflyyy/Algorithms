@@ -22,10 +22,10 @@ class Solution:
         extra_head.next = head
 
         while head and head.next:
-            if head.val > head.next.val:
+            if head.val > head.next.mult:
                 node_to_insert = head.next
                 node_to_insert_pre = extra_head
-                while node_to_insert_pre.next.val < node_to_insert.val:
+                while node_to_insert_pre.next.mult < node_to_insert.mult:
                     node_to_insert_pre = node_to_insert_pre.next
 
                 head.next = node_to_insert.next

@@ -19,7 +19,7 @@ class BSTIterator:
         if sequence is None:
             sequence = []
         self.inorder_tree(root.left, sequence)
-        sequence.append(root.val)
+        sequence.append(root.mult)
         self.inorder_tree(root.right, sequence)
         return sequence
 
@@ -62,7 +62,7 @@ class BSTIterator:
             min_node = root.right
             while min_node.left:
                 min_node = min_node.left
-            root.val = min_node.val
+            root.val = min_node.mult
             root.right = self.deleteNode(root.right, root.val)
         return root
 

@@ -33,7 +33,7 @@ class Solution:
                     queue.append(queue[0].left)
                 if queue[0].right:
                     queue.append(queue[0].right)
-                sub_list.append(queue.popleft().val)
+                sub_list.append(queue.popleft().mult)
             result_list.append(sub_list)
 
         return result_list
@@ -83,7 +83,7 @@ class Solution:
                 if queue[0] is not None:
                     queue.append(queue[0].left)
                     queue.append(queue[0].right)
-                    sub_list.append(queue.popleft().val)
+                    sub_list.append(queue.popleft().mult)
                 else:
                     count_none_in_lvl += 1
                     sub_list.append(queue.popleft())
