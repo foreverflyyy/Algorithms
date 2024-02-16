@@ -51,6 +51,9 @@ class Solution:
             prev_nums[num] = i
         return []
 
+    def isIsomorphic(self, s: str, t: str) -> bool:
+        pass
+        
 
 solution = Solution()
 print(solution.intersection([3, 1, 2], [1]))
